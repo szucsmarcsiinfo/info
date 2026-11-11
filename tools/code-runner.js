@@ -31,7 +31,7 @@ int main(void) {
         },
         cpp: {
             label: "C++", mode: "text/x-c++src", lang: "c++", compiler: "g142", args: "-std=c++20",
-            stdin: "Mari\n",
+            stdin: "Marcsi\n",
             code: `#include <iostream>
 #include <string>
 #include <vector>
@@ -57,7 +57,7 @@ int main() {
         },
         cs: {
             label: "C#", mode: "text/x-csharp", lang: "csharp", compiler: "dotnet100csharpcoreclr", args: "",
-            stdin: "Mari\n",
+            stdin: "Marcsi\n",
             code: `using System;
 
 class Program
