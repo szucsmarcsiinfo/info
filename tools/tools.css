@@ -1,0 +1,314 @@
+/* A kiegészítő fülek (terminál, kódfuttatás, folyamatábra, titkosítás) stílusa.
+   A színeket és a gombokat az oldal saját változói adják. */
+
+.tools-error { margin: 24px; font-size: 15px; }
+
+.side-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 14px 16px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    font-size: 13px;
+    line-height: 1.55;
+}
+.side-scroll h4 { margin: 14px 0 6px; font-size: 13px; }
+.side-scroll h4:first-child { margin-top: 0; }
+.side-scroll ol { margin: 0; padding-left: 20px; }
+.side-scroll li { margin-bottom: 6px; }
+.side-scroll p { margin: 0 0 8px; }
+
+.field {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-sm);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
+    transition: border-color .15s, box-shadow .15s;
+}
+.field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+textarea.field.grow { flex: 1; min-height: 0; }
+
+.lbl { display: block; margin: 12px 0 6px; font-size: 13px; font-weight: 700; }
+.lbl:first-of-type { margin-top: 0; }
+.hint { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.actions[hidden], .aes-only[hidden] { display: none; }
+
+/* Terminál */
+.term-host {
+    flex: 1;
+    min-height: 0;
+    padding: 8px;
+    background: #1e1e1e;
+    border-radius: var(--r);
+    overflow: hidden;
+}
+.term-host .xterm { height: 100%; }
+.cmd {
+    display: inline-block;
+    max-width: 100%;
+    padding: 2px 8px;
+    background: var(--panel);
+    color: var(--accent-ink);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+}
+.cmd:hover { border-color: var(--accent); }
+.cmd-row { display: flex; gap: 8px; align-items: baseline; margin-bottom: 6px; }
+.cmd-row span { color: var(--muted); }
+
+/* Kódfuttatás */
+.code-stdin { flex: none; height: 84px; margin-bottom: 10px; }
+.code-note { flex: none; margin: 8px 0 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* Folyamatábra */
+.flow-view {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+}
+.flow-view svg { display: block; margin: 0 auto; height: auto; }
+
+/* Titkosítás */
+.out-row { margin-bottom: 14px; }
+.out-row .name { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-weight: 700; }
+.out-row .val {
+    display: block;
+    padding: 8px 10px;
+    background: var(--panel-2);
+    border-radius: 7px;
+    font-family: var(--mono);
+    font-size: 13px;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+.out-row .val.err { color: var(--err); }
+.btn.small { height: 26px; padding: 0 9px; font-size: 12px; }
+
+/* ---------- DevBox eszközök: közös elemek ---------- */
+a.btn { text-decoration: none; }
+.side-scroll.plain { background: none; border: 0; padding: 2px 2px 8px; }
+.mini-label {
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.samples-label { margin-top: 16px; }
+.samples { display: flex; flex-wrap: wrap; gap: 6px; }
+.empty { margin: 0; color: var(--muted); font-size: 13px; }
+.loading { margin: 0; color: var(--muted); font-size: 13px; }
+.loading::before {
+    content: "";
+    display: inline-block;
+    width: 10px; height: 10px;
+    margin-right: 8px;
+    border: 2px solid var(--line-strong);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    vertical-align: -1px;
+    animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.side-scroll p.err { margin: 0 0 10px; }
+.note { margin: 6px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.note-box {
+    margin: 16px 0 0;
+    padding: 10px 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--muted);
+}
+.note-box b { color: var(--ink); }
+.mono { font-family: var(--mono); font-size: 12.5px; }
+table.result td.wrap { white-space: normal; word-break: break-all; }
+.btn.wide { width: 100%; max-width: none; }
+.btn .ico { width: 15px; height: 15px; }
+
+/* Találatlista (Hash- és Kódolás-felismerő) */
+.cand {
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+.cand-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cand-name { font-family: var(--display); font-weight: 700; font-size: 14px; }
+.cand-meta { margin: 4px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.conf {
+    flex: none;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+.conf.high { color: #15803d; background: rgba(22, 163, 74, .10); border-color: rgba(22, 163, 74, .25); }
+.conf.med { color: #a16207; background: rgba(202, 138, 4, .10); border-color: rgba(202, 138, 4, .25); }
+.conf.low { color: var(--muted); background: var(--panel-2); border-color: var(--line); }
+:root[data-dark] .conf.high { color: #4ade80; }
+:root[data-dark] .conf.med { color: #facc15; }
+.decoded {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    background: var(--console);
+    color: #e6e8ef;
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 280px;
+    overflow: auto;
+}
+
+/* Kulcs–érték lista */
+.kv-list {
+    display: grid;
+    grid-template-columns: minmax(110px, max-content) 1fr;
+    margin: 0 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--panel);
+    font-size: 13px;
+}
+.kv-list dt, .kv-list dd { margin: 0; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.kv-list dt { color: var(--muted); font-weight: 600; background: var(--panel-2); }
+.kv-list dd { font-family: var(--mono); font-size: 12.5px; word-break: break-word; }
+.kv-list dt:nth-last-of-type(1), .kv-list dd:last-of-type { border-bottom: 0; }
+.kv-list dd.good { color: #15803d; }
+.kv-list dd.bad { color: var(--err); }
+:root[data-dark] .kv-list dd.good { color: #4ade80; }
+
+/* Képátalakító */
+.dropzone {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 28px 16px;
+    text-align: center;
+    background: var(--panel-2);
+    border: 1.5px dashed var(--line-strong);
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color .15s, background-color .15s;
+}
+.dropzone .ico { width: 30px; height: 30px; color: var(--accent); }
+.dropzone small { color: var(--muted); font-size: 12px; }
+.dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
+.img-controls { margin-top: 16px; }
+.img-controls[hidden], .im-ico[hidden], .im-resize[hidden], .im-result[hidden], .net-form[hidden], .net-out[hidden], .sn-item[hidden] { display: none; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px 16px; }
+.form-grid .lbl { margin-top: 12px; }
+.im-quality.disabled { opacity: .45; }
+.range-val { float: right; font-family: var(--mono); font-weight: 600; color: var(--accent-ink); }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.preview-grid figure { margin: 0; }
+.thumb {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    padding: 8px;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M0 0h8v8H0zM8 8h8v8H8z' fill='%23eceef3'/%3E%3C/svg%3E");
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+/* Hálózat */
+.net-modes { flex: none; flex-wrap: wrap; margin-bottom: 12px; align-self: flex-start; }
+
+/* Kódrészletek */
+.search-field { position: relative; flex: none; }
+.search-field .ico { position: absolute; left: 11px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: var(--muted); }
+.search-field .field { padding-left: 34px; }
+.chips { flex: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+.chip {
+    height: 28px;
+    padding: 0 11px;
+    background: var(--panel);
+    color: var(--muted);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-family: var(--display);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.chip:hover { color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--panel); }
+.sn-list { flex: 1; min-height: 0; overflow: auto; display: grid; align-content: start; gap: 6px; }
+.sn-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    row-gap: 2px;
+    align-items: baseline;
+    padding: 10px 12px;
+    text-align: left;
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-family: inherit;
+    cursor: pointer;
+}
+.sn-item:hover { border-color: var(--line-strong); }
+.sn-item.active { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.sn-title { font-family: var(--display); font-weight: 700; font-size: 13.5px; }
+.sn-desc { grid-column: 2; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.lang-tag {
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+.lang-tag[data-cat="python"] { --c: #3776ab; }
+.lang-tag[data-cat="javascript"] { --c: #a16207; }
+.lang-tag[data-cat="html"] { --c: #e34c26; }
+.lang-tag[data-cat="css"] { --c: #2563eb; }
+.lang-tag[data-cat="bash"] { --c: #15803d; }
+.lang-tag[data-cat="sql"] { --c: #0369a1; }
+:root[data-dark] .lang-tag { color: color-mix(in srgb, var(--c) 55%, #fff); }
+.sn-head { display: flex; align-items: center; gap: 10px; }
+.sn-head h3 { margin: 0; font-family: var(--display); font-size: 18px; letter-spacing: -.01em; }
+.sn-lead { margin: 8px 0 0; font-size: 14px; line-height: 1.55; }
+.sn-actions { margin: 14px 0 12px; align-items: center; }
+.sn-code { flex: none; min-height: 0; max-height: none; }
+
+@media (max-width: 820px) {
+    .preview-grid { grid-template-columns: 1fr; }
+    .sn-list { max-height: 50vh; }
+}

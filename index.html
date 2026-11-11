@@ -1,0 +1,3655 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatika Tanulás</title>
+    <link rel="icon" href="logos/html_logo.svg">
+    <meta name="color-scheme" content="light dark">
+    <script>try { var t = localStorage.getItem("ll:theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.20/index.css">
+
+    <!-- Skulpt: Python és Turtle a böngészőben -->
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+
+    <!-- sql.js: igazi SQLite adatbázis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-asm.js"></script>
+
+    <!-- Új játszóterek függőségei -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/5.2.2/typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <script src="https://unpkg.com/uniter@2.11.0/dist/uniter.js"></script>
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
+
+    <!-- CodeMirror: kódszínezés -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/sql/sql.min.js"></script>
+    <!-- Új kódszínezők -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/lua/lua.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/php/php.min.js"></script>
+
+    <style>
+        @font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 400 700; font-display: swap; src: url(assets/fonts/spacegrotesk-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+        @font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 400 700; font-display: swap; src: url(assets/fonts/spacegrotesk-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+        /* ---------- Színek: világos (alap) és sötét mód ---------- */
+        :root {
+            color-scheme: light;
+            --bg: #f3f4f8;
+            --panel: #ffffff;
+            --panel-2: #eceef4;
+            --ink: #151823;
+            --muted: #5d6576;
+            --line: #e1e4ec;
+            --line-strong: #c9ceda;
+            --accent: #4f46e5;
+            --accent-dark: #4338ca;
+            --accent-soft: rgba(79, 70, 229, .10);
+            --accent-ink: #3730a3;
+            --err: #b3261e;
+            --warn-bg: #fff4ed;
+            --warn-line: #f5c7ad;
+            --mark: #fde68a;
+            --editor: #1d1f2b;
+            --console: #11131a;
+            --shadow-sm: 0 1px 2px rgba(20, 24, 40, .06);
+            --shadow: 0 1px 2px rgba(20, 24, 40, .05), 0 6px 20px -8px rgba(20, 24, 40, .14);
+            --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235d6576' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --display: "Space Grotesk", var(--font);
+            --mono: "JetBrains Mono", "Cascadia Code", "SF Mono", Consolas, "Courier New", monospace;
+            --r: 12px;
+            --r-sm: 9px;
+            --top: 56px;
+            --foot: 34px;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                color-scheme: dark;
+                --bg: #0c0e14;
+                --panel: #151822;
+                --panel-2: #1d212d;
+                --ink: #e8eaf0;
+                --muted: #9ba3b4;
+                --line: #262b38;
+                --line-strong: #353b4b;
+                --accent: #818cf8;
+                --accent-dark: #a5b4fc;
+                --accent-soft: rgba(129, 140, 248, .14);
+                --accent-ink: #c7d2fe;
+                --err: #ff8a80;
+                --warn-bg: #2a1a14;
+                --warn-line: #5c3321;
+                --mark: rgba(250, 204, 21, .38);
+                --editor: #1a1c26;
+                --console: #0a0b10;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+                --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px -10px rgba(0, 0, 0, .6);
+                --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ba3b4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            }
+        }
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #0c0e14;
+            --panel: #151822;
+            --panel-2: #1d212d;
+            --ink: #e8eaf0;
+            --muted: #9ba3b4;
+            --line: #262b38;
+            --line-strong: #353b4b;
+            --accent: #818cf8;
+            --accent-dark: #a5b4fc;
+            --accent-soft: rgba(129, 140, 248, .14);
+            --accent-ink: #c7d2fe;
+            --err: #ff8a80;
+            --warn-bg: #2a1a14;
+            --warn-line: #5c3321;
+            --mark: rgba(250, 204, 21, .38);
+            --editor: #1a1c26;
+            --console: #0a0b10;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+            --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px -10px rgba(0, 0, 0, .6);
+            --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ba3b4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+        }
+        body { display: flex; flex-direction: column; }
+
+        button, input, select, textarea { font-family: inherit; }
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        ::selection { background: var(--accent-soft); }
+
+        /* ---------- Felső sáv ---------- */
+        .topbar {
+            flex: none;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 10px 16px;
+            padding: 10px 16px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            z-index: 20;
+        }
+        .brand {
+            flex: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--display);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -.01em;
+            white-space: nowrap;
+        }
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 32px; height: 32px;
+            border-radius: 10px;
+            background: var(--ink);
+            color: var(--panel);
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ---------- Navigáció: gyakori fülek + kategória-lenyílók ---------- */
+        .nav {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quick {
+            flex: none;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 4px;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+        }
+        .quick-label {
+            padding: 0 8px 0 8px;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .tab {
+            flex: none;
+            background: none;
+            border: 0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-family: var(--display);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--muted);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: color .15s, background-color .15s, box-shadow .15s;
+        }
+        .quick .tab { display: inline-flex; align-items: center; gap: 7px; }
+        .quick .tab::before {
+            content: "";
+            width: 7px; height: 7px;
+            border-radius: 2px;
+            background: var(--c, var(--accent));
+        }
+        .quick .tab:hover { color: var(--ink); background: var(--panel); }
+        .quick .tab.active {
+            color: var(--ink);
+            background: var(--panel);
+            box-shadow: var(--shadow-sm), 0 0 0 1px var(--line);
+        }
+        .tab:focus-visible, .dd-btn:focus-visible { outline-offset: -2px; }
+
+        .dds { display: flex; gap: 2px; min-width: 0; }
+        .dd-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            padding: 0 10px 0 12px;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            font-family: var(--display);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--muted);
+            white-space: nowrap;
+            cursor: pointer;
+            position: relative;
+            transition: color .15s, background-color .15s, border-color .15s;
+        }
+        .dd-btn:hover, .dd-btn[aria-expanded="true"] { color: var(--ink); background: var(--panel-2); }
+        .dd-btn[aria-expanded="true"] { border-color: var(--line); }
+        .dd-btn .chev { width: 14px; height: 14px; opacity: .7; transition: transform .15s; }
+        .dd-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+        .dd-btn.has-active { color: var(--ink); }
+        .dd-btn.has-active::after {
+            content: "";
+            position: absolute;
+            left: 12px; right: 12px; bottom: -11px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+        .dd { position: relative; }
+
+        /* A menü fix pozícióban nyílik (JS számolja), így semmi nem vágja le */
+        .menu {
+            position: fixed;
+            z-index: 60;
+            display: grid;
+            gap: 2px;
+            width: 292px;
+            max-width: calc(100vw - 16px);
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding: 6px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 16px 40px -12px rgba(15, 18, 30, .28), 0 2px 6px rgba(15, 18, 30, .06);
+            animation: menu-in .12s ease-out;
+        }
+        .menu[hidden] { display: none; }
+        @keyframes menu-in { from { opacity: 0; transform: translateY(-4px); } }
+        .menu .tab {
+            display: grid;
+            grid-template-columns: 38px 1fr;
+            column-gap: 12px;
+            align-items: center;
+            width: 100%;
+            padding: 7px 10px 7px 7px;
+            text-align: left;
+            border-radius: 10px;
+            white-space: normal;
+        }
+        .menu .tab:hover, .menu .tab:focus-visible { background: var(--panel-2); }
+        .menu .badge {
+            grid-row: span 2;
+            display: grid;
+            place-items: center;
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: color-mix(in srgb, var(--c) 13%, var(--panel));
+            border: 1px solid color-mix(in srgb, var(--c) 22%, var(--panel));
+            color: color-mix(in srgb, var(--c) 82%, var(--ink));
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: -.02em;
+        }
+        .menu .name { color: var(--ink); font-size: 13.5px; line-height: 1.25; }
+        .menu small { font-family: var(--font); font-size: 12px; font-weight: 400; color: var(--muted); line-height: 1.3; }
+        .menu .tab.active { background: var(--accent-soft); }
+        .menu .tab.active .name { color: var(--accent-ink); }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+        .top-actions { grid-column: 3; grid-row: 1; display: flex; align-items: center; gap: 6px; }
+        .session { display: flex; gap: 6px; align-items: center; }
+        .autosave { font-size: 12px; color: var(--muted); white-space: nowrap; }
+        @media (max-width: 1100px) { .autosave { display: none; } }
+        .btn .ico { width: 16px; height: 16px; flex: none; }
+        .btn.icon { width: 34px; padding: 0; justify-content: center; }
+        #theme-toggle .sun { display: none; }
+        :root[data-dark] #theme-toggle .sun { display: block; }
+        :root[data-dark] #theme-toggle .moon { display: none; }
+
+        /* ---------- Munkaterületek ---------- */
+        main { flex: 1; min-height: 0; display: flex; padding: 12px; }
+        .workspace { display: none; flex: 1; min-width: 0; min-height: 0; }
+        .workspace.active { display: flex; animation: ws-in .22s ease-out; }
+        @keyframes ws-in { from { opacity: 0; transform: translateY(4px); } }
+
+        .left-pane, .right-pane {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+            padding: 14px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        .left-pane { width: 50%; flex: none; }
+        .right-pane { flex: 1; }
+
+        .resizer {
+            flex: none;
+            position: relative;
+            width: 12px;
+            cursor: col-resize;
+            background: none;
+        }
+        .resizer::after {
+            content: "";
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 4px; height: 44px;
+            transform: translate(-50%, -50%);
+            border-radius: 4px;
+            background: var(--line-strong);
+            transition: background-color .15s, height .15s;
+        }
+        .resizer:hover::after, .resizer.active::after { background: var(--accent); height: 72px; }
+
+        .toolbar {
+            flex: none;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            min-height: 34px;
+            margin-bottom: 12px;
+            font-family: var(--display);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -.005em;
+        }
+        .toolbar > span:first-child:not(.stat) {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toolbar > span:first-child:not(.stat)::before {
+            content: "";
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+        .toolbar .group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+        /* ---------- Gombok ---------- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line-strong);
+            border-radius: var(--r-sm);
+            padding: 0 12px;
+            font-family: var(--display);
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .1s;
+        }
+        .btn:hover { background: var(--panel-2); border-color: var(--line-strong); }
+        .btn:active { transform: translateY(1px); }
+        .btn.primary {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            color: #fff;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn.primary:not([data-act="encrypt"])::before {
+            content: "";
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 4.5px 0 4.5px 7px;
+            border-color: transparent transparent transparent currentColor;
+        }
+        .btn.primary:hover { background: #4338ca; border-color: #4338ca; }
+        .btn:disabled { opacity: .55; cursor: default; }
+
+        .seg {
+            display: inline-flex;
+            gap: 2px;
+            padding: 3px;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: 11px;
+        }
+        .seg .btn {
+            height: 28px;
+            border: 0;
+            border-radius: 8px;
+            background: none;
+            box-shadow: none;
+            color: var(--muted);
+        }
+        .seg .btn:hover { color: var(--ink); }
+        .seg .btn[aria-pressed="true"] {
+            background: var(--panel);
+            color: var(--accent-ink);
+            box-shadow: var(--shadow-sm), 0 0 0 1px var(--line);
+        }
+
+        select.btn {
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 0 30px 0 12px;
+            max-width: 200px;
+            background: var(--panel) var(--chev) no-repeat right 10px center;
+        }
+        select.btn:hover { background-color: var(--panel-2); }
+        select.btn option { background: var(--panel); color: var(--ink); }
+
+        .stat {
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        .stat:not(:empty) {
+            padding: 3px 9px;
+            background: var(--panel-2);
+            border-radius: 999px;
+        }
+
+        /* ---------- Szerkesztő ---------- */
+        .CodeMirror {
+            flex: 1;
+            height: 0;
+            min-height: 0;
+            border-radius: var(--r);
+            background: var(--editor);
+            border: 1px solid rgba(255, 255, 255, .06);
+            font-family: var(--mono);
+            font-size: 13.5px;
+            line-height: 1.65;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+        }
+        .cm-s-dracula.CodeMirror, .cm-s-dracula .CodeMirror-gutters { background: var(--editor) !important; }
+        .cm-s-dracula .CodeMirror-gutters { border-right: 1px solid rgba(255, 255, 255, .05); }
+        .CodeMirror-lines { padding: 10px 0; }
+        .CodeMirror-linenumber { padding: 0 10px 0 8px; }
+        .cm-s-dracula .CodeMirror-activeline-background { background: rgba(255, 255, 255, .04); }
+        .cm-s-dracula span.cm-comment {
+            color: #7dffb0;
+            font-style: italic;
+        }
+        .CodeMirror-vscrollbar::-webkit-scrollbar, .CodeMirror-hscrollbar::-webkit-scrollbar { width: 10px; height: 10px; }
+        .CodeMirror-vscrollbar::-webkit-scrollbar-thumb, .CodeMirror-hscrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .14); border-radius: 10px; border: 2px solid var(--editor); }
+
+        /* ---------- Jobb oldali felületek ---------- */
+        .frame, .output-box, .sql-output, .turtle-wrap {
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+        }
+        iframe.frame { display: block; background: #fff; }
+        #game-render { background: #000; }
+
+        .status-bar {
+            flex: none;
+            margin-top: 10px;
+            padding: 9px 12px;
+            border: 1px solid var(--warn-line);
+            border-radius: var(--r-sm);
+            background: var(--warn-bg);
+            font-size: 13px;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+        .status-bar[hidden] { display: none; }
+
+        [data-mode="turtle"] #output-view { display: none; }
+        [data-mode="normal"] #turtle-view { display: none; }
+        #turtle-view, #output-view {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        [data-mode="turtle"] #turtle-view { position: relative; }
+
+        .turtle-wrap {
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        #turtle-canvas { position: absolute; inset: 0; }
+
+        .output-box {
+            padding: 14px 16px;
+            margin: 0;
+            overflow: auto;
+            white-space: pre-wrap;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        pre.output-box {
+            background: var(--console);
+            color: #e6e8ef;
+            border-color: transparent;
+        }
+        pre.output-box .err { color: #ff8a80; }
+        .err { color: var(--err); font-weight: 600; }
+
+        .turtle-log {
+            position: absolute;
+            left: 1px; right: 1px; bottom: 1px;
+            max-height: 40%;
+            overflow: auto;
+            padding: 10px 14px;
+            background: rgba(17, 19, 26, .94);
+            color: #f2f2f2;
+            border-radius: 0 0 11px 11px;
+            font-family: var(--mono);
+            font-size: 13px;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+        .turtle-log[hidden] { display: none; }
+        .turtle-log .err { color: #ff8a80; }
+        .turtle-log button {
+            position: sticky;
+            float: right;
+            top: 0;
+            background: #f2f2f2;
+            color: #15181d;
+            border: none;
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ---------- Markdown előnézet ---------- */
+        #md-output {
+            white-space: normal;
+            font-family: var(--font);
+            font-size: 15px;
+            line-height: 1.65;
+            padding: 18px 22px;
+        }
+        #md-output > :first-child { margin-top: 0; }
+        #md-output h1, #md-output h2, #md-output h3 { font-family: var(--display); letter-spacing: -.01em; line-height: 1.25; margin: 1.3em 0 .5em; }
+        #md-output h1 { font-size: 1.8em; padding-bottom: .3em; border-bottom: 1px solid var(--line); }
+        #md-output h2 { font-size: 1.4em; }
+        #md-output a { color: var(--accent); }
+        #md-output code { font-family: var(--mono); font-size: .88em; background: var(--panel-2); padding: .15em .4em; border-radius: 6px; }
+        #md-output pre { background: var(--console); color: #e6e8ef; padding: 12px 14px; border-radius: 10px; overflow: auto; }
+        #md-output pre code { background: none; padding: 0; color: inherit; }
+        #md-output blockquote { margin: 1em 0; padding: .4em 1em; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 8px 8px 0; }
+        #md-output hr { border: 0; border-top: 1px solid var(--line); margin: 1.6em 0; }
+        #md-output table { border-collapse: collapse; }
+        #md-output th, #md-output td { border: 1px solid var(--line); padding: 6px 10px; }
+        #md-output img { max-width: 100%; }
+
+        /* ---------- Lenyíló panelek ---------- */
+        .info-panel {
+            flex: none;
+            max-height: 240px;
+            overflow: auto;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .info-panel[hidden] { display: none; }
+        .info-panel h4 { margin: 0 0 8px; font-size: 13px; }
+        .info-panel ul { margin: 0; padding-left: 18px; }
+        .info-panel li { margin-bottom: 4px; }
+        .info-panel code {
+            font-family: var(--mono);
+            font-size: 12px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            padding: 1px 5px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        .info-panel .cols { display: flex; gap: 24px; flex-wrap: wrap; }
+        .info-panel .cols > div { flex: 1; min-width: 200px; }
+        .info-panel .note { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+
+        #image-gallery-container { display: flex; flex-wrap: wrap; gap: 6px; }
+        .img-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: auto;
+            padding: 4px 10px 4px 4px;
+        }
+        .img-btn img {
+            width: 32px; height: 32px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: var(--bg);
+        }
+        .img-btn.missing { color: var(--muted); text-decoration: line-through; }
+
+        /* ---------- Színválasztó ---------- */
+        #color-panel {
+            position: fixed;
+            z-index: 50;
+            width: 224px;
+            padding: 12px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .35);
+            user-select: none;
+        }
+        #color-panel[hidden] { display: none; }
+        #cp-sv {
+            position: relative;
+            height: 150px;
+            border-radius: 8px;
+            cursor: crosshair;
+            touch-action: none;
+            background-image:
+                linear-gradient(to top, #000, rgba(0, 0, 0, 0)),
+                linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+        }
+        #cp-dot {
+            position: absolute;
+            width: 14px; height: 14px;
+            margin: -7px 0 0 -7px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #000;
+            pointer-events: none;
+        }
+        #cp-hue {
+            display: block;
+            width: 100%;
+            margin: 12px 0;
+            height: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+            cursor: pointer;
+        }
+        #cp-hue::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px; height: 18px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: 0 0 0 1px #000;
+        }
+        #cp-hue::-moz-range-thumb {
+            width: 14px; height: 14px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: 0 0 0 1px #000;
+        }
+        .cp-row { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 13px; }
+        #cp-swatch { width: 28px; height: 28px; border: 1px solid var(--line-strong); border-radius: 7px; flex: none; }
+
+        /* ---------- SQL ---------- */
+        .schema {
+            flex: none;
+            max-height: 30%;
+            overflow: auto;
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            font-size: 13px;
+        }
+        .schema h4 { margin: 0 0 6px; font-size: 13px; }
+        .schema-table {
+            display: block;
+            width: 100%;
+            padding: 4px 6px;
+            margin: 0 -6px;
+            width: calc(100% + 12px);
+            text-align: left;
+            background: none;
+            border: none;
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: 12.5px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+        .schema-table b { color: var(--accent-ink); }
+        .schema-table:hover { background: var(--panel); color: var(--ink); }
+
+        .sql-output { overflow: auto; padding: 14px; }
+        .sql-block { margin-bottom: 18px; }
+        .sql-stmt {
+            margin: 0 0 8px;
+            padding: 6px 10px;
+            background: var(--panel-2);
+            border-radius: 7px;
+            font-family: var(--mono);
+            font-size: 12px;
+            white-space: pre-wrap;
+            color: var(--muted);
+        }
+        .sql-msg { margin: 0; font-size: 14px; }
+        .sql-msg.err { font-weight: 600; }
+        table.result {
+            font-variant-numeric: tabular-nums;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            min-width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        table.result th, table.result td {
+            border-bottom: 1px solid var(--line);
+            padding: 8px 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        table.result tr:last-child td { border-bottom: 0; }
+        table.result th {
+            background: var(--panel-2);
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--muted);
+        }
+        table.result tbody tr:hover td { background: var(--accent-soft); }
+        table.result td.null { color: var(--muted); font-style: italic; }
+
+        /* ---------- Lábléc ---------- */
+        .footer {
+            flex: none;
+            height: var(--foot);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+        .footer strong { color: var(--ink); font-weight: 600; }
+
+        /* ---------- Regex UI ---------- */
+        .regex-ui {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            min-height: 0;
+        }
+        .regex-ui input, .regex-ui textarea {
+            width: 100%;
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line-strong);
+            border-radius: var(--r-sm);
+            padding: 10px 12px;
+            font-family: var(--mono);
+            font-size: 14px;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        .regex-ui input:focus, .regex-ui textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .regex-ui textarea { flex: 1; resize: none; }
+        .regex-ui mark { background-color: var(--mark); color: inherit; border-radius: 3px; }
+        #regex-output mark { background-color: var(--mark); color: inherit; border-radius: 3px; }
+
+        /* ---------- Blockly ---------- */
+        #blocklyDiv { flex: 1; width: 100%; min-height: 0; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); color: #15181d; color-scheme: light; }
+        .blockly-out { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+
+        /* ---------- Görgetősávok ---------- */
+        * { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+
+        /* ---------- Széles képernyő: egy sorban a fejléc ---------- */
+        @media (min-width: 1600px) {
+            .nav { grid-column: 2; grid-row: 1; justify-self: center; }
+        }
+        @media (min-width: 1600px) and (max-width: 1779px) {
+            .session .btn .txt { display: none; }
+            .session .btn { width: 34px; padding: 0; justify-content: center; }
+        }
+
+        /* ---------- Keskeny képernyő ---------- */
+        @media (max-width: 820px) {
+            .topbar { padding: 8px 10px; gap: 8px; }
+            .brand { font-size: 14px; gap: 8px; }
+            .brand-mark { width: 28px; height: 28px; border-radius: 8px; font-size: 11px; }
+            .session .btn .txt { display: none; }
+            .session .btn { width: 34px; padding: 0; justify-content: center; }
+            .tab { padding: 6px 10px; }
+            .nav { flex-wrap: wrap; gap: 8px; }
+            .quick, .dds { width: calc(100% + 20px); margin: 0 -10px; padding-left: 10px; padding-right: 10px; overflow-x: auto; scrollbar-width: none; }
+            .quick { width: 100%; margin: 0; padding: 4px; }
+            .quick::-webkit-scrollbar, .dds::-webkit-scrollbar { display: none; }
+            .dds { gap: 6px; }
+            .dd-btn { border-color: var(--line); background: var(--panel); height: 38px; }
+            .dd-btn.has-active { border-color: var(--accent); }
+            .dd-btn.has-active::after { display: none; }
+            main { padding: 10px; }
+            .workspace.active { flex-direction: column; gap: 10px; }
+            .left-pane { width: 100% !important; height: 70vh; flex: none; padding: 12px; }
+            .right-pane { min-height: 360px; flex: none; padding: 12px; }
+            .resizer { display: none; }
+            html, body { overflow: auto; height: auto; }
+            body { min-height: 100%; }
+            main { min-height: calc(100vh - var(--top) - var(--foot)); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>Informatika Tanulás</div>
+        <div class="top-actions">
+            <div class="session" role="group" aria-label="Munkamenet mentése és betöltése">
+                <span id="autosave-status" class="autosave" role="status" aria-live="polite"></span>
+                <button class="btn" id="autosave-clear" type="button" aria-label="Automatikus mentés törlése" title="Törli a böngészőben automatikusan mentett állapotot. Az oldal legközelebb az alap tartalommal indul."><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/></svg><span class="txt">Automentés törlése</span></button>
+                <button class="btn" id="session-save" type="button" aria-label="Minden mentése" title="Minden fül mostani állapotát (kódok, adatbázis, blokkok, regex, terminál fájljai) egyetlen fájlba menti"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span class="txt">Minden mentése</span></button>
+                <button class="btn" id="session-load" type="button" aria-label="Minden betöltése" title="Egy korábban mentett munkamenet-fájl visszatöltése"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></svg><span class="txt">Minden betöltése</span></button>
+            </div>
+            <button class="btn icon" id="theme-toggle" type="button" aria-label="Sötét mód" aria-pressed="false" title="Sötét / világos mód"><svg class="ico moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg><svg class="ico sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+        </div>
+        <nav class="nav" aria-label="Témakörök">
+            <div class="quick" role="group" aria-labelledby="quick-label">
+                <span class="quick-label" id="quick-label">Gyakori</span>
+                <button class="tab active" type="button" data-target="html-workspace" style="--c:#e34c26" aria-current="true">HTML</button>
+                <button class="tab" type="button" data-target="python-workspace" style="--c:#3776ab">Python</button>
+                <button class="tab" type="button" data-target="blockly-workspace" style="--c:#2563eb">Blockly</button>
+                <button class="tab" type="button" data-target="game-workspace" style="--c:#c2410c">Játék (Kaboom)</button>
+            </div>
+            <div class="dds">
+                <div class="dd">
+                    <button class="dd-btn has-active" type="button" aria-expanded="false" aria-controls="menu-web">Web<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <div class="menu" id="menu-web" hidden>
+                        <button class="tab active" type="button" data-target="html-workspace" style="--c:#e34c26" aria-current="true"><span class="badge" aria-hidden="true">HTML</span><span class="name">HTML</span><small>Weboldal élő előnézettel</small></button>
+                        <button class="tab" type="button" data-target="md-workspace" style="--c:#475569"><span class="badge" aria-hidden="true">MD</span><span class="name">Markdown</span><small>Formázott jegyzetek</small></button>
+                        <button class="tab" type="button" data-target="ts-workspace" style="--c:#3178c6"><span class="badge" aria-hidden="true">TS</span><span class="name">TypeScript</span><small>JavaScript típusokkal</small></button>
+                        <button class="tab" type="button" data-target="php-workspace" style="--c:#6d6fb0"><span class="badge" aria-hidden="true">PHP</span><span class="name">PHP</span><small>Szerveroldali kód</small></button>
+                        <button class="tab" type="button" data-target="image-workspace" style="--c:#0d9488"><span class="badge" aria-hidden="true">IMG</span><span class="name">Képátalakító</span><small>JPG, PNG, WebP és favicon</small></button>
+                    </div>
+                </div>
+                <div class="dd">
+                    <button class="dd-btn" type="button" aria-expanded="false" aria-controls="menu-prog">Programozás<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <div class="menu" id="menu-prog" hidden>
+                        <button class="tab" type="button" data-target="python-workspace" style="--c:#3776ab"><span class="badge" aria-hidden="true">PY</span><span class="name">Python</span><small>Kiírás és teknőcrajz</small></button>
+                        <button class="tab" type="button" data-target="lua-workspace" style="--c:#4338ca"><span class="badge" aria-hidden="true">LUA</span><span class="name">Lua</span><small>Roblox-stílusú szkriptek</small></button>
+                        <button class="tab" type="button" data-target="code-workspace" style="--c:#a8458f"><span class="badge" aria-hidden="true">C++</span><span class="name">C / C++ / C#</span><small>Fordított nyelvek futtatása</small></button>
+                    </div>
+                </div>
+                <div class="dd">
+                    <button class="dd-btn" type="button" aria-expanded="false" aria-controls="menu-visual">Vizuális és játék<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <div class="menu" id="menu-visual" hidden>
+                        <button class="tab" type="button" data-target="blockly-workspace" style="--c:#2563eb"><span class="badge" aria-hidden="true">BLK</span><span class="name">Blockly</span><small>Programozás blokkokkal</small></button>
+                        <button class="tab" type="button" data-target="game-workspace" style="--c:#c2410c"><span class="badge" aria-hidden="true">2D</span><span class="name">Játék (Kaboom)</span><small>2D játék JavaScriptben</small></button>
+                        <button class="tab" type="button" data-target="flow-workspace" style="--c:#047857"><span class="badge" aria-hidden="true">FLW</span><span class="name">Folyamatábra</span><small>Algoritmus lerajzolása</small></button>
+                    </div>
+                </div>
+                <div class="dd">
+                    <button class="dd-btn" type="button" aria-expanded="false" aria-controls="menu-data">Adatok<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <div class="menu" id="menu-data" hidden>
+                        <button class="tab" type="button" data-target="sql-workspace" style="--c:#0369a1"><span class="badge" aria-hidden="true">SQL</span><span class="name">SQL</span><small>Adatbázis-lekérdezések</small></button>
+                        <button class="tab" type="button" data-target="regex-workspace" style="--c:#be185d"><span class="badge" aria-hidden="true">.*</span><span class="name">Regex</span><small>Mintakeresés szövegben</small></button>
+                        <button class="tab" type="button" data-target="snippets-workspace" style="--c:#ea580c"><span class="badge" aria-hidden="true">{ }</span><span class="name">Kódrészletek</span><small>Kereshető, másolható példák</small></button>
+                    </div>
+                </div>
+                <div class="dd">
+                    <button class="dd-btn" type="button" aria-expanded="false" aria-controls="menu-sec">Biztonság és hálózat<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <div class="menu" id="menu-sec" hidden>
+                        <button class="tab" type="button" data-target="terminal-workspace" style="--c:#334155"><span class="badge" aria-hidden="true">&gt;_</span><span class="name">Terminál</span><small>Linux és Windows parancsok</small></button>
+                        <button class="tab" type="button" data-target="crypto-workspace" style="--c:#7c3aed"><span class="badge" aria-hidden="true">AES</span><span class="name">Titkosítás</span><small>Hash, Base64, AES</small></button>
+                        <button class="tab" type="button" data-target="hashid-workspace" style="--c:#6d28d9"><span class="badge" aria-hidden="true">#</span><span class="name">Hash-felismerő</span><small>Melyik algoritmus lehetett?</small></button>
+                        <button class="tab" type="button" data-target="decoder-workspace" style="--c:#db2777"><span class="badge" aria-hidden="true">B64</span><span class="name">Kódolás-felismerő</span><small>Base64, JWT, Morze és a többi</small></button>
+                        <button class="tab" type="button" data-target="network-workspace" style="--c:#0284c7"><span class="badge" aria-hidden="true">IP</span><span class="name">Hálózat (OSINT)</span><small>IP, DNS, WHOIS, ping</small></button>
+                    </div>
+                </div>
+                <div class="dd">
+                    <button class="dd-btn" type="button" aria-expanded="false" aria-controls="menu-tananyagok">
+                        Tananyagok
+                        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="menu" id="menu-tananyagok" hidden>
+                        <!-- The options will be injected here dynamically by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <script>
+        const tananyagMappak = [
+            { id: "python", nev: "Python Alapok", szin: "#3776ab", ikon: "PY" },
+            { id: "html", nev: "HTML & CSS", szin: "#e34c26", ikon: "HTML" },
+            { id: "sql", nev: "Adatbázisok", szin: "#0369a1", ikon: "SQL" }
+        ];
+        
+        const menuTananyagok = document.getElementById("menu-tananyagok");
+        if (menuTananyagok) {
+            tananyagMappak.forEach(mappa => {
+                const btn = document.createElement("button");
+                btn.className = "tab";
+                btn.type = "button";
+                btn.style.setProperty("--c", mappa.szin);
+                
+                // Sends the user to the target place where texts and images are stored
+                btn.onclick = () => {
+                    window.location.href = `anyagok/${mappa.id}/index.html`;
+                };
+                
+                btn.innerHTML = `
+                    <span class="badge" aria-hidden="true">${mappa.ikon}</span>
+                    <span class="name">${mappa.nev}</span>
+                    <small>Tananyag megnyitása</small>
+                `;
+                menuTananyagok.appendChild(btn);
+            });
+        }
+        // Sötét / világos mód: külön szkript, hogy a CDN-könyvtárak nélkül is működjön
+        (function () {
+            const root = document.documentElement, btn = document.getElementById("theme-toggle");
+            const darkQuery = matchMedia("(prefers-color-scheme: dark)");
+            function applyTheme() {
+                const dark = root.dataset.theme ? root.dataset.theme === "dark" : darkQuery.matches;
+                root.toggleAttribute("data-dark", dark);
+                btn.setAttribute("aria-pressed", dark ? "true" : "false");
+            }
+            btn.addEventListener("click", () => {
+                const next = root.hasAttribute("data-dark") ? "light" : "dark";
+                root.dataset.theme = next;
+                try { localStorage.setItem("ll:theme", next); } catch (e) {}
+                applyTheme();
+            });
+            darkQuery.addEventListener("change", applyTheme);
+            applyTheme();
+        })();
+
+        // ---------- Navigáció: gyakori fülek és lenyíló kategóriák (a CDN-könyvtárak nélkül is működik) ----------
+        // Kijelöli az aktív fület a gyakori sávban és a lenyílókban, és aláhúzza a kategóriáját
+        function syncNav(id) {
+            document.querySelectorAll(".nav .tab").forEach(t => {
+                const on = t.dataset.target === id;
+                t.classList.toggle("active", on);
+                if (on) t.setAttribute("aria-current", "true"); else t.removeAttribute("aria-current");
+            });
+            document.querySelectorAll(".dd").forEach(dd => dd.querySelector(".dd-btn").classList.toggle("has-active", !!dd.querySelector(".tab.active")));
+        }
+        document.addEventListener("tools:activate", e => syncNav(e.detail.id));
+
+        // Lenyíló menük: kattintás, nyilak, Home/End, Escape; kívülre kattintva vagy Tabbal kilépve bezárul
+        function closeMenus(except) {
+            document.querySelectorAll(".dd-btn[aria-expanded='true']").forEach(b => {
+                if (b === except) return;
+                b.setAttribute("aria-expanded", "false");
+                document.getElementById(b.getAttribute("aria-controls")).hidden = true;
+            });
+        }
+        function placeMenu(btn, menu) {
+            const r = btn.getBoundingClientRect(), pad = 8;
+            const w = menu.offsetWidth;
+            menu.style.top = Math.round(r.bottom + 8) + "px";
+            menu.style.left = Math.round(Math.max(pad, Math.min(r.left, innerWidth - w - pad))) + "px";
+        }
+        function openMenu(btn, focus) {
+            closeMenus(btn);
+            const menu = document.getElementById(btn.getAttribute("aria-controls"));
+            btn.setAttribute("aria-expanded", "true");
+            menu.hidden = false;
+            placeMenu(btn, menu);
+            const items = [...menu.querySelectorAll(".tab")];
+            if (focus === "first") items[0].focus();
+            else if (focus === "last") items[items.length - 1].focus();
+            else if (focus === "active") (menu.querySelector(".tab.active") || items[0]).focus();
+        }
+        document.querySelectorAll(".dd-btn").forEach(btn => {
+            const dd = btn.parentElement, menu = document.getElementById(btn.getAttribute("aria-controls"));
+            btn.addEventListener("click", () => {
+                if (btn.getAttribute("aria-expanded") === "true") closeMenus();
+                else openMenu(btn, null);
+            });
+            btn.addEventListener("keydown", e => {
+                if (e.key === "ArrowDown") { e.preventDefault(); openMenu(btn, "active"); }
+                else if (e.key === "ArrowUp") { e.preventDefault(); openMenu(btn, "last"); }
+            });
+            menu.addEventListener("keydown", e => {
+                const items = [...menu.querySelectorAll(".tab")], i = items.indexOf(document.activeElement);
+                let next = null;
+                if (e.key === "ArrowDown") next = items[(i + 1) % items.length];
+                else if (e.key === "ArrowUp") next = items[(i - 1 + items.length) % items.length];
+                else if (e.key === "Home") next = items[0];
+                else if (e.key === "End") next = items[items.length - 1];
+                else if (e.key === "Escape") { e.preventDefault(); closeMenus(); btn.focus(); return; }
+                if (next) { e.preventDefault(); next.focus(); }
+            });
+            dd.addEventListener("focusout", e => {
+                if (e.relatedTarget && !dd.contains(e.relatedTarget)) { btn.setAttribute("aria-expanded", "false"); menu.hidden = true; }
+            });
+        });
+        document.addEventListener("click", e => { if (!e.target.closest(".dd")) closeMenus(); });
+        document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenus(); });
+        // Görgetéskor és átméretezéskor a nyitott menü a gombja alatt marad
+        function followMenu() {
+            const b = document.querySelector(".dd-btn[aria-expanded='true']");
+            if (b) placeMenu(b, document.getElementById(b.getAttribute("aria-controls")));
+        }
+        addEventListener("resize", followMenu);
+        addEventListener("scroll", followMenu, { passive: true });
+        document.querySelector(".dds").addEventListener("scroll", followMenu, { passive: true });
+
+        // Minden fülgomb egy helyen: a tools/ mappás fülek a Tools-on át, a többi közvetlenül nyílik meg
+        document.querySelector(".nav").addEventListener("click", e => {
+            const t = e.target.closest(".tab");
+            if (!t) return;
+            const id = t.dataset.target;
+            closeMenus();
+            if (window.Tools && Tools.ids().includes(id)) Tools.activate(id);
+            else if (typeof showWorkspace === "function") showWorkspace(id);
+            t.scrollIntoView({ block: "nearest", inline: "nearest" });
+        });
+    </script>
+
+    <main>
+        <!-- ================= HTML ================= -->
+        <div id="html-workspace" class="workspace active">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>HTML és CSS kód</span>
+                    <div class="group">
+                        <button class="btn" onclick="toggleImageGallery()">Kép beszúrása</button>
+                        <button class="btn" onclick="loadHtmlFile()" title="HTML fájl megnyitása a gépedről">Betöltés</button>
+                        <button class="btn" onclick="saveHtmlFile()" title="A kód mentése HTML fájlba">Mentés</button>
+                    </div>
+                </div>
+
+                <div id="image-gallery-panel" class="info-panel" hidden>
+                    <h4>Kattints egy képre, és a kód bekerül oda, ahol a kurzor áll.</h4>
+                    <div id="image-gallery-container"></div>
+                    <p class="note">A képeket az <b>info_images/</b> mappából tölti be. Ami áthúzva van, azt nem találta meg a mappában.</p>
+                </div>
+
+                <div id="color-panel" hidden>
+                    <div id="cp-sv" aria-label="Szín kiválasztása, húzd az egeret">
+                        <div id="cp-dot"></div>
+                    </div>
+                    <input type="range" id="cp-hue" min="0" max="360" step="1" aria-label="Árnyalat">
+                    <div class="cp-row"><span id="cp-swatch"></span><span id="cp-value"></span></div>
+                </div>
+
+                <input type="file" id="html-file" accept=".html,.htm,text/html" hidden>
+
+                <textarea id="html-code"><!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Weboldal Építés Alapjai</title>
+
+    <style>
+        /* Az egész oldal alapbeállításai */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: rgb(244, 244, 244);
+            color: rgb(51, 51, 51);
+        }
+        /* A fejléc: fekete sáv fehér szöveggel */
+        header {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: rgb(221, 221, 221);
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: rgb(255, 0, 0);
+        }
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgb(255, 255, 255);
+            border: 2px solid rgb(204, 204, 204);
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: rgb(238, 238, 238);
+            border-top: 2px solid rgb(204, 204, 204);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Az Első Igazi Weboldalam</h1>
+    </header>
+    <nav>
+        <a href="#tanulas">Tanulás</a>
+        <a href="#kepek">Képek beszúrása</a>
+        <a href="#feladat">Feladat</a>
+    </nav>
+    <main>
+        <section id="tanulas">
+            <h2>Hogyan épül fel egy weboldal?</h2>
+            <p>Egy modern weblap olyan, mint egy ház építése. A <strong>HTML</strong> adja a falakat és a szerkezetet.</p>
+            <p>A <strong>CSS</strong> pedig a festés és a belsőépítészet: ezzel mondjuk meg, mi milyen színű, mekkora.</p>
+        </section>
+
+        <br>
+
+        <section id="kepek">
+            <h2>Hogyan szúrjunk be képet?</h2>
+            <p>Kattints a fenti <b>"Kép beszúrása"</b> gombra, válassz egy képet, és a kód automatikusan bekerül ide!</p>
+            <!-- Ide szúrd be a képeket! -->
+
+        </section>
+
+        <br>
+
+        <section id="feladat">
+            <h2>Próbáld ki a színválasztót!</h2>
+            <ul>
+                <li>Kattints bele egy <strong>rgb(...)</strong> kódba a bal oldalon!</li>
+                <li>Amint a kurzor a kódba ér, megjelenik egy kis színválasztó doboz.</li>
+                <li>Kattints rá, válassz új színt, és nézd meg a változást a jobb oldalon!</li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>Készült a 11. osztályos webfejlesztés órára. Minden jog fenntartva.</p>
+    </footer>
+</body>
+</html></textarea>
+            </div>
+
+            <div class="resizer"></div>
+
+            <div class="right-pane">
+                <div class="toolbar">
+                    <span>Élő eredmény</span>
+                    <div class="group">
+                        <button class="btn" id="html-copy" type="button" onclick="copyRenderedPage()" title="A kész, megjelenített weblapot másolja a vágólapra. Szövegszerkesztőbe vagy levélbe beillesztve úgy látszik, ahogy itt; kódszerkesztőbe a kész HTML kód kerül.">Másolás</button>
+                        <button class="btn" id="html-pdf" type="button" onclick="saveRenderedPdf()" title="Megnyitja a nyomtatási ablakot. Válaszd a „Mentés PDF-ként” nyomtatót.">Mentés PDF-ként</button>
+                    </div>
+                </div>
+                <iframe id="html-render" class="frame" title="Élő eredmény"></iframe>
+                <div id="html-status" class="status-bar" hidden></div>
+            </div>
+        </div>
+
+        <!-- ================= PYTHON ================= -->
+        <div id="python-workspace" class="workspace" data-mode="turtle">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>Python kód</span>
+                    <div class="group">
+                        <div class="seg" role="group" aria-label="Mód">
+                            <button class="btn" id="mode-normal" aria-pressed="false" onclick="setPythonMode('normal')" title="Szöveges Python, a jobb oldalon a kimenet látszik">Normál Python</button>
+                            <button class="btn" id="mode-turtle" aria-pressed="true" onclick="setPythonMode('turtle')" title="Rajzoló teknőc, a jobb oldalon a rajz látszik">Teknőc (Turtle)</button>
+                        </div>
+                        <button class="btn primary" onclick="runPython()" title="Ctrl + Enter">Futtatás</button>
+                    </div>
+                </div>
+
+                <textarea id="python-code">import turtle
+
+t = turtle.Turtle()
+t.color("red")
+t.pensize(3)
+
+for i in range(4):
+    t.forward(100)
+    t.right(90)
+</textarea>
+            </div>
+
+            <div class="resizer"></div>
+
+            <div class="right-pane">
+                <div class="toolbar">
+                    <span id="python-title">Rajz</span>
+                    <span id="python-stat" class="stat"></span>
+                </div>
+
+                <div id="turtle-view">
+                    <div class="turtle-wrap"><div id="turtle-canvas"></div></div>
+                    <div id="turtle-log" class="turtle-log" hidden>
+                        <button onclick="closeTurtleLog()">Bezár</button>
+                        <span id="turtle-log-text"></span>
+                    </div>
+                </div>
+
+                <div id="output-view">
+                    <pre id="python-output" class="output-box"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SQL ================= -->
+        <div id="sql-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>SQL parancsok</span>
+                    <div class="group">
+                        <button class="btn" onclick="resetDatabase()">Adatbázis visszaállítása</button>
+                        <button class="btn primary" onclick="runSql()">Futtatás</button>
+                    </div>
+                </div>
+                <textarea id="sql-code">SELECT * FROM diakok;</textarea>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Eredmény</span><span id="sql-stat" class="stat"></span></div>
+                <div class="schema"><div id="sql-schema">Az adatbázis töltődik...</div></div>
+                <div id="sql-output" class="sql-output"></div>
+            </div>
+        </div>
+
+        <!-- ================= MARKDOWN ================= -->
+        <div id="md-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar"><span>Markdown Kód</span></div>
+
+                <textarea id="md-code"># Főcím
+
+## Alcím
+
+### Kisebb alcím
+
+Ez egy **félkövér szöveg**, ez pedig *dőlt szöveg*.
+
+Ezt ~~áthúzott szövegnek~~ hívjuk. (AltGr+1 / AltGr+0 = ~)
+
+> Ez egy idézet.
+> Több sorból is állhat.
+
+---
+
+## Felsorolások
+
+### Rendezetlen lista
+
+- Első elem
+- Második elem
+  - Al-Első elem
+  - Al-Második elem
+- Harmadik elem
+
+### Rendezett lista
+
+1. Első lépés
+2. Második lépés
+3. Harmadik lépés
+
+### Feladatlista
+
+- [x] Elkészült feladat
+- [x] Másik elkészült feladat
+- [ ] Még hátralévő feladat
+
+---
+
+## Linkek
+
+[OpenAI weboldala](https://openai.com)
+
+Automatikus link: <https://example.com>
+
+---
+
+## Képek
+
+![Alternatív szöveg. Citrom](https://jozoldseg.cdn.shoprenter.hu/custom/jozoldseg/image/cache/w550h800wt1q100/Képek/jozoldseg_citrom.png.webp)
+
+---
+
+<u>Aláhúzott szöveg</u>
+
+---
+
+## Kód
+
+Inline kód: `console.log("Hello World");` (AltGr+7=`)
+
+```javascript
+function hello(name) {
+    console.log(`Hello, ${name}!`);
+}
+
+hello("Sándor")```
+</textarea>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Eredmény</span></div>
+                <div id="md-output" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- ================= TYPESCRIPT ================= -->
+        <div id="ts-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>TypeScript Kód</span>
+                    <button class="btn primary" onclick="runTS()">Futtatás</button>
+                </div>
+                <textarea id="ts-code">let uzenet: string = "Helló TypeScript!";
+console.log(uzenet);
+
+interface Diak {
+    nev: string;
+    kor: number;
+}
+
+const gabor: Diak = { nev: "Gábor", kor: 17 };
+console.log(`Diák neve: ${gabor.nev}, kora: ${gabor.kor}`);
+</textarea>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Kimenet (Konzol)</span></div>
+                <pre id="ts-output" class="output-box"></pre>
+            </div>
+        </div>
+
+        <!-- ================= LUA ================= -->
+        <div id="lua-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>Lua Kód (Roblox stílus)</span>
+                    <button class="btn primary" onclick="runLua()">Futtatás</button>
+                </div>
+                <textarea id="lua-code">print("Helló Lua világ!")
+
+local jatekos = "Viktor"
+local pontszam = 150
+
+if pontszam > 100 then
+    print(jatekos .. " nagyon jól játszik!")
+end
+
+for i = 1, 5 do
+    print("Ciklus lépés: " .. i)
+end
+</textarea>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Kimenet (Konzol)</span></div>
+                <pre id="lua-output" class="output-box"></pre>
+            </div>
+        </div>
+
+        <!-- ================= PHP ================= -->
+        <div id="php-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>PHP Kód (Backend)</span>
+                    <button class="btn primary" onclick="runPHP()">Futtatás</button>
+                </div>
+                <textarea id="php-code"><?php
+echo "Helló PHP!\n";
+
+$nev = "Axióma Web";
+echo "Készítő: " . $nev . "\n";
+
+$szamok = array(1, 2, 3, 4, 5);
+foreach ($szamok as $szam) {
+    echo "Szám: " . $szam . "\n";
+}
+?></textarea>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Szerver Kimenet</span></div>
+                <pre id="php-output" class="output-box"></pre>
+            </div>
+        </div>
+
+        <!-- ================= BLOCKLY ================= -->
+        <div id="blockly-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>Vizuális Programozás</span>
+                    <button class="btn primary" onclick="runBlockly()">Kód Generálása és Futtatása</button>
+                </div>
+                <div id="blocklyDiv"></div>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Generált JS kód és Kimenet</span></div>
+                <div class="blockly-out">
+                    <pre id="blockly-code-output" class="output-box"></pre>
+                    <pre id="blockly-output" class="output-box"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= REGEX ================= -->
+        <div id="regex-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar"><span>Regex Tesztelő</span></div>
+                <div class="regex-ui">
+                    <input type="text" id="regex-pattern" placeholder="Minta (pl. \b[a-zA-Z0-9]+@\S+\.\S+)" oninput="updateRegex()" value="[a-zA-Z0-9]+">
+                    <input type="text" id="regex-flags" placeholder="Zászlók (pl. gi)" oninput="updateRegex()" value="g">
+                    <textarea id="regex-test" placeholder="Ide írd a tesztelni kívánt szöveget..." oninput="updateRegex()">Zalán email címe: zalanpelda@gmail.com
+Ide jöhet bármilyen szöveg, amiben keresni akarsz.</textarea>
+                </div>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Találatok (Kiemelve)</span><span id="regex-stat" class="stat"></span></div>
+                <div id="regex-output" class="output-box"></div>
+            </div>
+        </div>
+
+        <!-- ================= JÁTÉK (KABOOM) ================= -->
+        <div id="game-workspace" class="workspace">
+            <div class="left-pane">
+                <div class="toolbar">
+                    <span>2D Játék Logika (JS)</span>
+                    <button class="btn primary" onclick="runGame()">Játék Indítása</button>
+                </div>
+                <textarea id="game-code">// Kaboom.js 2D Játék
+kaboom();
+loadBean();
+setGravity(1600);
+
+// Egy karakter hozzáadása
+const bean = add([
+    sprite("bean"), // Beépített grafika
+    pos(80, 40),
+    area(),
+    body(), // Gravitáció
+]);
+
+// Talaj hozzáadása
+add([
+    rect(width(), 48),
+    pos(0, height() - 48),
+    outline(4),
+    area(),
+    body({ isStatic: true }), // Fix, nem esik le
+    color(127, 200, 255),
+]);
+
+// Mozgás és ugrás
+onKeyDown("left", () => bean.move(-240, 0));
+onKeyDown("right", () => bean.move(240, 0));
+onKeyPress("space", () => {
+    if (bean.isGrounded()) {
+        bean.jump();
+    }
+});
+</textarea>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-pane">
+                <div class="toolbar"><span>Játék Vászon</span></div>
+                <iframe id="game-render" class="frame" title="Játék"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        Készítette <strong>Axióma Webfejlesztés</strong>
+    </footer>
+
+    <script>
+        const $ = id => document.getElementById(id);
+        function el(tag, cls, text) {
+            const n = document.createElement(tag);
+            if (cls) n.className = cls;
+            if (text != null) n.textContent = text;
+            return n;
+        }
+
+        // ---------- 1. Szerkesztők ----------
+        const baseOptions = {
+            theme: "dracula",
+            lineNumbers: true,
+            indentUnit: 4,
+            lineWrapping: true,
+            extraKeys: { Tab: cm => cm.execCommand("insertSoftTab") }
+        };
+
+        const htmlEditor = CodeMirror.fromTextArea($("html-code"), { ...baseOptions, mode: "htmlmixed" });
+        const pythonEditor = CodeMirror.fromTextArea($("python-code"), { ...baseOptions, mode: "python", extraKeys: { ...baseOptions.extraKeys, "Ctrl-Enter": () => runPython() } });
+        const sqlEditor = CodeMirror.fromTextArea($("sql-code"), { ...baseOptions, mode: "text/x-sql", extraKeys: { ...baseOptions.extraKeys, "Ctrl-Enter": () => runSql() } });
+        
+        const mdEditor = CodeMirror.fromTextArea($("md-code"), { ...baseOptions, mode: "markdown" });
+        const tsEditor = CodeMirror.fromTextArea($("ts-code"), { ...baseOptions, mode: "text/typescript" });
+        const luaEditor = CodeMirror.fromTextArea($("lua-code"), { ...baseOptions, mode: "lua" });
+        const phpEditor = CodeMirror.fromTextArea($("php-code"), { ...baseOptions, mode: "php" });
+        const gameEditor = CodeMirror.fromTextArea($("game-code"), { ...baseOptions, mode: "javascript" });
+
+        const editors = {
+            "html-workspace": htmlEditor,
+            "python-workspace": pythonEditor,
+            "sql-workspace": sqlEditor,
+            "md-workspace": mdEditor,
+            "ts-workspace": tsEditor,
+            "lua-workspace": luaEditor,
+            "php-workspace": phpEditor,
+            "game-workspace": gameEditor
+        };
+
+        const logos = {
+            "html-workspace":"logos/html_logo.svg",
+            "python-workspace":"logos/python_logo.svg",
+            "sql-workspace":"logos/sql_logo.svg",
+            "md-workspace":"logos/md_logo.svg",
+            "ts-workspace":"logos/ts_logo.svg",
+            "lua-workspace":"logos/lua_logo.svg",
+            "php-workspace":"logos/php_logo.svg",
+            "blockly-workspace":"logos/blocky_logo.svg",
+            "regex-workspace":"logos/regex_logo.svg",
+            "game-workspace":"logos/kaboom_logo.svg",
+            "code-workspace":"logos/c_logo.svg",
+            "crypto-workspace":"logos/enc_logo.svg",
+            "flow-workspace":"logos/flowchart_logo.svg",
+            "terminal-workspace":"logos/terminal_logo.svg",
+            "image-workspace":"logos/image_logo.svg",
+            "hashid-workspace":"logos/hash_logo.svg",
+            "decoder-workspace":"logos/decoder_logo.svg",
+            "network-workspace":"logos/network_logo.svg",
+            "snippets-workspace":"logos/snippets_logo.svg"
+        }
+        //helper 1
+        function setFavicon(url) {
+            if (!url) return;
+
+            // Remove every existing favicon
+            document
+                .querySelectorAll("link[rel~='icon']")
+                .forEach(link => link.remove());
+
+            // Create a fresh favicon
+            const link = document.createElement("link");
+
+            link.rel = "icon";
+            link.type = "image/svg+xml";
+            link.href = `${url}`;
+
+            document.head.appendChild(link);
+        }
+        //helper 2
+        function getFavicon() {
+            const link = document.querySelector("link[rel~='icon']");
+            return link ? link.href : null;
+        }
+        // A tools/ mappából jövő fülek (Terminál, C / C++ / C#, Folyamatábra, Titkosítás) ezen az eseményen át szólnak
+        document.addEventListener("tools:activate", e => setFavicon(logos[e.detail.id]));
+        // ---------- 2. Fülek ----------
+        function showWorkspace(id) {
+            document.querySelectorAll(".workspace").forEach(w => w.classList.toggle("active", w.id === id));
+            syncNav(id);
+            hideColorPicker();
+
+            setFavicon(logos[id]);
+            console.log("Favicon set to:", logos[id]);
+            console.log("current icon:", getFavicon());
+            
+            if (id === "blockly-workspace") { if (!window.blocklyInited) initBlockly(); requestAnimationFrame(resizeBlockly); }
+            if (id === "regex-workspace") updateRegex();
+            
+            if (editors[id]) requestAnimationFrame(() => editors[id].refresh());
+        }
+
+        // ---------- 3. HTML Élő Eredmény & Képek ----------
+        const BASE_URL = new URL("./", document.baseURI).href;
+        // Az előnézetben a linkek nem visznek el sehova: a #hivatkozások az előnézeten belül görgetnek,
+        // a többi link és az űrlapok küldése nem tölt be új oldalt (különben az iframe a saját oldalunkat nyitná meg).
+        const LINK_GUARD = "<script data-inj>(function(){" +
+            "document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;e.preventDefault();" +
+            "var h=a.getAttribute('href')||'';if(h.charAt(0)!=='#')return;if(h.length<2){window.scrollTo({top:0,behavior:'smooth'});return;}" +
+            "var t=document.getElementById(decodeURIComponent(h.slice(1)))||document.getElementsByName(decodeURIComponent(h.slice(1)))[0];if(t)t.scrollIntoView({behavior:'smooth'});},true);" +
+            "document.addEventListener('submit',function(e){e.preventDefault();},true);" +
+            "})();<\/script>";
+        function buildSrcdoc(code) {
+            const inject = (/<base\s/i.test(code) ? "" : '<base data-inj href="' + BASE_URL + '">') + LINK_GUARD;
+            if (/<head[^>]*>/i.test(code)) return code.replace(/<head[^>]*>/i, m => m + inject);
+            if (/<html[^>]*>/i.test(code)) return code.replace(/<html[^>]*>/i, m => m + "<head>" + inject + "</head>");
+            return inject + code;
+        }
+
+        const htmlFrame = $("html-render");
+        let htmlTimer = null;
+        function updateHTML() { htmlFrame.srcdoc = buildSrcdoc(htmlEditor.getValue()); }
+        htmlEditor.on("change", () => { clearTimeout(htmlTimer); htmlTimer = setTimeout(updateHTML, 200); });
+
+        const imageList = ["magyar_peter.png", "tony_stark.png", "barney_stinson.png", "donald_trump.png", "dicaprio_pointing.png", "ted.png", "doner.png", "twitter.png", "charlie_kirk.png","axiomaweb.png"];
+        let imageFromURL = false;
+
+        function toggleImageGallery() {
+            const panel = $("image-gallery-panel");
+            const container = $("image-gallery-container");
+            panel.hidden = !panel.hidden;
+
+            if (!panel.hidden && !container.children.length) {
+                imageList.forEach(name => {
+                    const btn = el("button", "btn img-btn");
+                    const thumb = document.createElement("img");
+                    thumb.src = "info_images/" + name;
+                    thumb.alt = "";
+                    thumb.addEventListener("error", () => { btn.classList.add("missing"); thumb.remove(); });
+                    btn.append(thumb, name);
+                    btn.addEventListener("click", () => insertImageIntoHtml(name));
+                    container.appendChild(btn);
+                });
+                
+                const load_with_url_input = el("input", "btn img-btn");
+                load_with_url_input.type = "text";
+                load_with_url_input.placeholder = "Kép URL (Enter)";
+                load_with_url_input.addEventListener("keydown", e => {
+                    if (e.key === "Enter") {
+                        imageFromURL = true;
+                        if (load_with_url_input.value.trim()) insertImageIntoHtml(load_with_url_input.value.trim());
+                    }
+                });
+                
+                const load_with_file_input = el("input", "btn img-btn");
+                load_with_file_input.type = "file";
+                load_with_file_input.accept = "image/*";
+                load_with_file_input.addEventListener("change", (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const base64String = event.target.result;
+                        const altText = file.name.split(".")[0].replace(/_/g, " ");
+                        htmlEditor.replaceSelection(`\n<img src="${base64String}" alt="${altText}" width="250">\n`);
+                        htmlEditor.focus();
+                        e.target.value = "";
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                panel.prepend(load_with_file_input);
+                panel.prepend(load_with_url_input);
+            }
+        }
+
+        function insertImageIntoHtml(fileName) {
+            if (imageFromURL) {
+                htmlEditor.replaceSelection('\n<img src="' + fileName + '" alt="" width="250">\n');
+                imageFromURL = false;
+            } else {
+                const altText = fileName.split(".")[0].replace(/_/g, " ");
+                htmlEditor.replaceSelection('\n<img src="info_images/' + fileName + '" alt="' + altText + '" width="250">\n');
+            }
+            htmlEditor.focus();
+        }
+
+// ---------- 4. Segédek ----------
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const R = String.raw;
+
+function downloadText(text, name, type) {
+            const a = el("a");
+            a.href = URL.createObjectURL(new Blob([text], { type: type + ";charset=utf-8" }));
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        }
+
+        function makeConsole(target) {
+            const fmt = x => {
+                if (x instanceof Error) return x.message;
+                if (x !== null && typeof x === "object") { try { return JSON.stringify(x); } catch (e) { return String(x); } }
+                return String(x);
+            };
+            const write = (...a) => { target.textContent += a.map(fmt).join(" ") + "\n"; };
+            return { log: write, info: write, warn: write, error: write, debug: write };
+        }
+
+        // ---------- 5. Színválasztó ----------
+        const colorPanel = $("color-panel");
+        const cpSV = $("cp-sv"), cpDot = $("cp-dot"), cpHue = $("cp-hue"), cpSwatch = $("cp-swatch"), cpValue = $("cp-value");
+        const cp = { h: 0, s: 1, v: 1, line: 0, from: 0, to: 0, hex: false, busy: false };
+        const colorRe = /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)|#[0-9a-fA-F]{6}\b/g;
+
+        function hideColorPicker() { colorPanel.hidden = true; }
+        function hsvToRgb(h, s, v) {
+            const f = n => { const k = (n + h / 60) % 6; return v - v * s * Math.max(0, Math.min(k, 4 - k, 1)); };
+            return [f(5), f(3), f(1)].map(x => Math.round(x * 255));
+        }
+        function rgbToHsv(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+            let h = 0;
+            if (d) {
+                if (max === r) h = ((g - b) / d) % 6;
+                else if (max === g) h = (b - r) / d + 2;
+                else h = (r - g) / d + 4;
+                h *= 60;
+                if (h < 0) h += 360;
+            }
+            return { h, s: max ? d / max : 0, v: max };
+        }
+        function cpText() {
+            const [r, g, b] = hsvToRgb(cp.h, cp.s, cp.v);
+            return cp.hex ? "#" + [r, g, b].map(x => x.toString(16).padStart(2, "0")).join("") : "rgb(" + r + ", " + g + ", " + b + ")";
+        }
+        function cpDraw() {
+            const [r, g, b] = hsvToRgb(cp.h, cp.s, cp.v);
+            cpSV.style.backgroundColor = "hsl(" + cp.h + ", 100%, 50%)";
+            cpDot.style.left = cp.s * 100 + "%";
+            cpDot.style.top = (1 - cp.v) * 100 + "%";
+            cpHue.value = cp.h;
+            cpSwatch.style.background = "rgb(" + r + ", " + g + ", " + b + ")";
+            cpValue.textContent = cpText();
+        }
+        function cpApply() {
+            const text = cpText();
+            cp.busy = true;
+            htmlEditor.replaceRange(text, { line: cp.line, ch: cp.from }, { line: cp.line, ch: cp.to });
+            cp.to = cp.from + text.length;
+            cp.busy = false;
+            cpDraw();
+        }
+        function cpPick(e) {
+            const r = cpSV.getBoundingClientRect();
+            cp.s = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+            cp.v = 1 - Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+            cpApply();
+        }
+        cpSV.addEventListener("pointerdown", e => { cpSV.setPointerCapture(e.pointerId); cpPick(e); });
+        cpSV.addEventListener("pointermove", e => { if (cpSV.hasPointerCapture(e.pointerId)) cpPick(e); });
+        cpHue.addEventListener("input", () => { cp.h = +cpHue.value; cpApply(); });
+
+        function checkColorAtCursor() {
+            if (cp.busy) return;
+            const pos = htmlEditor.getCursor();
+            const text = htmlEditor.getLine(pos.line);
+            colorRe.lastIndex = 0;
+            let m;
+            while ((m = colorRe.exec(text))) {
+                if (pos.ch >= m.index && pos.ch <= m.index + m[0].length) {
+                    cp.line = pos.line;
+                    cp.from = m.index;
+                    cp.to = m.index + m[0].length;
+                    cp.hex = m[0][0] === "#";
+                    const rgb = cp.hex
+                        ? [1, 3, 5].map(i => parseInt(m[0].substr(i, 2), 16))
+                        : [m[1], m[2], m[3]].map(x => Math.min(255, +x));
+                    Object.assign(cp, rgbToHsv(rgb[0], rgb[1], rgb[2]));
+                    cpDraw();
+                    const c = htmlEditor.cursorCoords(pos, "window");
+                    colorPanel.hidden = false;
+                    colorPanel.style.left = Math.max(4, Math.min(c.left, innerWidth - 240)) + "px";
+                    colorPanel.style.top = Math.max(4, Math.min(c.bottom + 6, innerHeight - colorPanel.offsetHeight - 6)) + "px";
+                    return;
+                }
+            }
+            hideColorPicker();
+        }
+        htmlEditor.on("cursorActivity", checkColorAtCursor);
+        htmlEditor.on("scroll", hideColorPicker);
+
+        // HTML fájl betöltése és mentése
+        function loadHtmlFile() { $("html-file").click(); }
+        $("html-file").addEventListener("change", e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => { htmlEditor.setValue(reader.result); htmlEditor.clearHistory(); };
+            reader.readAsText(file);
+            e.target.value = "";
+        });
+        function saveHtmlFile() { downloadText(htmlEditor.getValue(), "oldal.html", "text/html"); }
+
+        // A kész (megjelenített) weblap mentése PDF-be, illetve másolása.
+        function flashButton(id, text) {
+            const b = $(id), old = b.dataset.label || (b.dataset.label = b.textContent);
+            b.textContent = text;
+            clearTimeout(b._t);
+            b._t = setTimeout(() => { b.textContent = old; }, 1800);
+        }
+        function renderedDoc() {
+            const doc = htmlFrame.contentDocument;
+            return doc && doc.documentElement ? doc : null;
+        }
+        function saveRenderedPdf() {
+            const doc = renderedDoc();
+            if (!doc) { flashButton("html-pdf", "Még nincs eredmény"); return; }
+            // Háttérszínek és képek is kerüljenek a PDF-be, a böngésző ezt alapból kikapcsolja.
+            const st = doc.createElement("style");
+            st.textContent = "@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}";
+            doc.head.appendChild(st);
+            const oldTitle = document.title;
+            document.title = (doc.title || "oldal").trim();
+            const done = () => { document.title = oldTitle; st.remove(); };
+            htmlFrame.contentWindow.addEventListener("afterprint", done, { once: true });
+            setTimeout(done, 60000);
+            htmlFrame.contentWindow.focus();
+            htmlFrame.contentWindow.print();
+        }
+        // A kész oldal HTML kódja a mi segédelemeink nélkül (<base>, link-védő szkript).
+        function renderedHtmlSource(doc) {
+            const clone = doc.documentElement.cloneNode(true);
+            clone.querySelectorAll("[data-inj]").forEach(n => n.remove());
+            return "<!DOCTYPE html>\n" + clone.outerHTML;
+        }
+        // Csak a látványt meghatározó tulajdonságok kerülnek a másolatba, így az nem lesz felfújt.
+        const COPY_PROPS = ["display", "position", "float", "box-sizing", "color", "background-color", "background-image", "background-size", "background-position", "background-repeat",
+            "font-family", "font-size", "font-weight", "font-style", "line-height", "letter-spacing", "text-align", "text-decoration", "text-transform", "text-indent", "white-space", "list-style",
+            "margin-top", "margin-right", "margin-bottom", "margin-left", "padding-top", "padding-right", "padding-bottom", "padding-left",
+            "border-top", "border-right", "border-bottom", "border-left", "border-radius", "box-shadow", "opacity",
+            "flex-direction", "flex-wrap", "justify-content", "align-items", "gap", "flex", "grid-template-columns", "grid-template-rows",
+            "width", "max-width", "min-width", "height", "vertical-align", "overflow", "border-collapse", "border-spacing", "object-fit"];
+        // Ugyanaz kiszámolt (computed) stílusokkal soronként beírva, hogy beillesztve ugyanúgy nézzen ki.
+        function renderedHtmlStyled(doc) {
+            const win = doc.defaultView, body = doc.body;
+            const clone = body.cloneNode(true);
+            clone.querySelectorAll("script,style,[data-inj]").forEach(n => n.remove());
+            const src = [body, ...body.querySelectorAll("*")].filter(n => !n.matches("script,style,[data-inj]"));
+            const dst = [clone, ...clone.querySelectorAll("*")];
+            src.forEach((n, i) => {
+                const cs = win.getComputedStyle(n);
+                let css = "";
+                for (const prop of COPY_PROPS) {
+                    const v = cs.getPropertyValue(prop);
+                    if (v) css += prop + ":" + v + ";";
+                }
+                dst[i].setAttribute("style", css);
+                if (n.tagName === "IMG") dst[i].setAttribute("src", n.src);
+                if (n.tagName === "A" && n.getAttribute("href")) dst[i].setAttribute("href", n.href);
+            });
+            const bodyStyle = clone.getAttribute("style");
+            const inner = clone.innerHTML;
+            return '<div style="' + bodyStyle.replace(/"/g, "&quot;") + '">' + inner + "</div>";
+        }
+        async function copyRenderedPage() {
+            const doc = renderedDoc();
+            if (!doc || !doc.body) { flashButton("html-copy", "Még nincs eredmény"); return; }
+            const text = renderedHtmlSource(doc);
+            try {
+                if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+                    await navigator.clipboard.write([new ClipboardItem({
+                        "text/html": new Blob([renderedHtmlStyled(doc)], { type: "text/html" }),
+                        "text/plain": new Blob([text], { type: "text/plain" })
+                    })]);
+                } else {
+                    await navigator.clipboard.writeText(text);
+                }
+                flashButton("html-copy", "Kimásolva");
+            } catch (e) {
+                flashButton("html-copy", "Nem sikerült másolni");
+            }
+        }
+
+        // ---------- 6. Python ----------
+        function setPythonMode(mode) {
+            $("python-workspace").dataset.mode = mode;
+            $("mode-normal").setAttribute("aria-pressed", mode === "normal");
+            $("mode-turtle").setAttribute("aria-pressed", mode === "turtle");
+            $("python-title").textContent = mode === "turtle" ? "Rajz" : "Kimenet";
+        }
+        function closeTurtleLog() { $("turtle-log").hidden = true; $("turtle-log-text").textContent = ""; }
+        function pyWrite(text, isErr) {
+            const turtle = $("python-workspace").dataset.mode === "turtle";
+            const tgt = turtle ? $("turtle-log-text") : $("python-output");
+            isErr ? tgt.append(el("span", "err", text)) : tgt.append(document.createTextNode(text));
+            if (turtle) $("turtle-log").hidden = false;
+        }
+        function runPython() {
+            if (typeof Sk === "undefined") { pyWrite("A Python motor (Skulpt) nem töltődött be. Frissítsd az oldalt.", true); return; }
+            $("python-output").textContent = "";
+            $("python-stat").textContent = "";
+            closeTurtleLog();
+            const canvas = $("turtle-canvas");
+            canvas.innerHTML = "";
+            Sk.TurtleGraphics = Object.assign(Sk.TurtleGraphics || {}, { target: "turtle-canvas", width: canvas.parentElement.clientWidth, height: canvas.parentElement.clientHeight });
+            Sk.configure({
+                output: t => pyWrite(t, false),
+                read: x => { if (!Sk.builtinFiles || !Sk.builtinFiles.files[x]) throw "Nem található: " + x; return Sk.builtinFiles.files[x]; },
+                inputfunTakesPrompt: true,
+                inputfun: p => prompt(p),
+                __future__: Sk.python3
+            });
+            const t0 = performance.now();
+            Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, pythonEditor.getValue(), true))
+                .then(() => { $("python-stat").textContent = "Lefutott, " + Math.round(performance.now() - t0) + " ms"; })
+                .catch(e => pyWrite(e.toString() + "\n", true));
+        }
+
+        // ---------- 7. SQL ----------
+        let db = null, SQL = null, pendingDbBytes = null;
+        // Az automatikus mentés csak akkor exportálja az adatbázist, ha az tényleg megváltozott (a db.export() minden alkalommal újranyitja a kapcsolatot).
+        let dbDirty = false, dbCache = null;
+        function cachedDbB64() {
+            if (dbDirty) { dbCache = bytesToB64(db.export()); dbDirty = false; }
+            return dbCache;
+        }
+        const SQL_SEED = `
+CREATE TABLE tantargyak (id INTEGER PRIMARY KEY, nev TEXT NOT NULL);
+CREATE TABLE diakok (id INTEGER PRIMARY KEY, nev TEXT NOT NULL, osztaly TEXT, kor INTEGER);
+CREATE TABLE jegyek (id INTEGER PRIMARY KEY, diak_id INTEGER, tantargy_id INTEGER, jegy INTEGER);
+INSERT INTO tantargyak (id, nev) VALUES (1, 'Matematika'), (2, 'Informatika'), (3, 'Történelem'), (4, 'Angol');
+INSERT INTO diakok (id, nev, osztaly, kor) VALUES
+  (1, 'Kiss Anna', '11.A', 17), (2, 'Nagy Béla', '11.A', 17), (3, 'Szabó Csilla', '11.B', 16), (4, 'Tóth Dávid', '11.B', 15),
+  (5, 'Varga Emese', '12.A', 18), (6, 'Kovács Gábor', '12.A', 17), (7, 'Horváth Lilla', '11.A', 16), (8, 'Molnár Máté', '11.B', 17);
+INSERT INTO jegyek (diak_id, tantargy_id, jegy) VALUES
+  (1, 1, 5), (1, 2, 5), (1, 4, 4), (2, 1, 3), (2, 2, 4), (2, 3, 2), (3, 2, 5), (3, 4, 5),
+  (4, 1, 2), (4, 3, 3), (5, 1, 4), (5, 2, 5), (6, 3, 4), (6, 4, 3), (7, 2, 4), (8, 1, 3);
+`;
+
+        function renderSchema() {
+            const box = $("sql-schema");
+            box.replaceChildren(el("h4", null, "Táblák (kattints egyre)"));
+            const res = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+            const names = res.length ? res[0].values.map(r => r[0]) : [];
+            if (!names.length) { box.appendChild(el("div", null, "Nincs tábla.")); return; }
+            names.forEach(n => {
+                const cols = db.exec('PRAGMA table_info("' + n + '")')[0].values.map(c => c[1]);
+                const b = el("button", "schema-table");
+                b.append(el("b", null, n), " (" + cols.join(", ") + ")");
+                b.addEventListener("click", () => { sqlEditor.setValue("SELECT * FROM " + n + ";"); runSql(); });
+                box.appendChild(b);
+            });
+        }
+
+        function runSql() {
+            const out = $("sql-output");
+            out.replaceChildren();
+            if (!db) { out.appendChild(el("p", "sql-msg", "Az adatbázis még töltődik, próbáld újra egy pillanat múlva.")); return; }
+            const t0 = performance.now();
+            try {
+                const res = db.exec(sqlEditor.getValue());
+                if (/\b(insert|update|delete|create|drop|alter|replace|vacuum|pragma|begin|commit|attach)\b/i.test(sqlEditor.getValue())) dbDirty = true;
+                if (!res.length) out.appendChild(el("p", "sql-msg", "A parancs lefutott. Érintett sorok (utolsó parancs): " + db.getRowsModified()));
+                res.forEach(r => {
+                    const table = el("table", "result");
+                    const head = el("tr");
+                    r.columns.forEach(c => head.appendChild(el("th", null, c)));
+                    table.appendChild(el("thead")).appendChild(head);
+                    const body = el("tbody");
+                    r.values.forEach(row => {
+                        const tr = el("tr");
+                        row.forEach(v => tr.appendChild(v === null ? el("td", "null", "NULL") : el("td", null, String(v))));
+                        body.appendChild(tr);
+                    });
+                    table.appendChild(body);
+                    out.appendChild(el("div", "sql-block")).appendChild(table);
+                });
+                $("sql-stat").textContent = Math.round(performance.now() - t0) + " ms";
+            } catch (e) {
+                out.appendChild(el("p", "sql-msg err", "Hiba: " + e.message));
+                $("sql-stat").textContent = "";
+            }
+            try { renderSchema(); } catch (e) { /* a séma nem kritikus */ }
+        }
+
+        function resetDatabase() {
+            if (!SQL) return;
+            if (db) db.close();
+            db = new SQL.Database();
+            db.run(SQL_SEED);
+            dbDirty = false; dbCache = null;
+            runSql();
+        }
+        if (typeof initSqlJs === "function") {
+            initSqlJs().then(lib => {
+                SQL = lib;
+                if (pendingDbBytes) { openDatabase(pendingDbBytes); pendingDbBytes = null; }
+                else resetDatabase();
+            }).catch(e => {
+                $("sql-schema").textContent = "Az SQL motor nem töltődött be: " + e;
+            });
+        } else {
+            $("sql-schema").textContent = "Az SQL motor nem töltődött be. Frissítsd az oldalt.";
+        }
+
+        // ---------- 8. Markdown ----------
+        function renderMd() {
+            $("md-output").innerHTML = typeof marked !== "undefined"
+                ? marked.parse(mdEditor.getValue())
+                : "A Markdown motor nem töltődött be. Frissítsd az oldalt.";
+        }
+        mdEditor.on("change", renderMd);
+        renderMd();
+
+        // ---------- 9. TypeScript ----------
+        function runTS() {
+            const out = $("ts-output");
+            out.textContent = "";
+            if (typeof ts === "undefined") { out.textContent = "A TypeScript fordító nem töltődött be. Frissítsd az oldalt."; return; }
+            const r = ts.transpileModule(tsEditor.getValue(), { compilerOptions: { target: ts.ScriptTarget.ES2020 }, reportDiagnostics: true });
+            if (r.diagnostics && r.diagnostics.length) {
+                out.textContent = r.diagnostics.map(d => "Hiba: " + ts.flattenDiagnosticMessageText(d.messageText, "\n")).join("\n") + "\n";
+                return;
+            }
+            try {
+                new Function("console", r.outputText)(makeConsole(out));
+            } catch (e) {
+                out.textContent += "\nHiba: " + e.message;
+            }
+        }
+
+        // ---------- 10. Lua ----------
+        const LUA_PRE = R`
+local function tostr(...)
+    local t = {}
+    for i = 1, select("#", ...) do t[#t + 1] = tostring((select(i, ...))) end
+    return t
+end
+print = function(...) __out(table.concat(tostr(...), "\t") .. "\n") end
+io.write = function(...) __out(table.concat(tostr(...))) end
+warn = print
+`;
+        function runLua() {
+            const out = $("lua-output");
+            out.textContent = "";
+            if (typeof fengari === "undefined") { out.textContent = "A Lua motor nem töltődött be. Frissítsd az oldalt."; return; }
+            const { lua, lauxlib, lualib, to_luastring, to_jsstring } = fengari;
+            const L = lauxlib.luaL_newstate();
+            lualib.luaL_openlibs(L);
+            lua.lua_pushjsfunction(L, L2 => { out.textContent += to_jsstring(lauxlib.luaL_checklstring(L2, 1)); return 0; });
+            lua.lua_setglobal(L, to_luastring("__out"));
+            const exec = src => lauxlib.luaL_loadstring(L, to_luastring(src)) || lua.lua_pcall(L, 0, lua.LUA_MULTRET, 0);
+            try {
+                exec(LUA_PRE);
+                const status = exec(luaEditor.getValue());
+                if (status !== lua.LUA_OK) out.textContent += "\nHiba: " + to_jsstring(lua.lua_tostring(L, -1));
+            } catch (e) {
+                out.textContent += "\nHiba: " + e;
+            }
+        }
+
+        // ---------- 11. PHP ----------
+        function runPHP() {
+            const out = $("php-output");
+            out.textContent = "";
+            if (typeof uniter === "undefined") { out.textContent = "A PHP motor nem töltődött be. Frissítsd az oldalt."; return; }
+            const fail = e => {
+                const msg = String(e && e.message ? e.message : e);
+                if (!out.textContent.includes(msg)) out.textContent += "\nHiba: " + msg;
+            };
+            try {
+                const engine = uniter.createEngine("PHP");
+                engine.getStdout().on("data", t => { out.textContent += t; });
+                if (engine.getStderr) engine.getStderr().on("data", t => { out.textContent += t; });
+                const p = engine.execute(phpEditor.getValue());
+                if (p && typeof p.fail === "function") p.fail(fail);
+                else if (p && typeof p.catch === "function") p.catch(fail);
+            } catch (e) {
+                fail(e);
+            }
+        }
+
+        // ---------- 12. Blockly ----------
+        let bWorkspace = null;
+        const bNum = n => ({ shadow: { type: "math_number", fields: { NUM: n } } });
+        const bTxt = t => ({ shadow: { type: "text", fields: { TEXT: t } } });
+        const BLOCKLY_TOOLBOX = {
+            kind: "categoryToolbox",
+            contents: [
+                { kind: "category", name: "Indítás", colour: "45", contents: [{ kind: "block", type: "on_start" }] },
+                { kind: "category", name: "Kiírás és szöveg", colour: "160", contents: [
+                    { kind: "block", type: "text_print", inputs: { TEXT: bTxt("Szia!") } },
+                    { kind: "block", type: "text" },
+                    { kind: "block", type: "text_join" },
+                    { kind: "block", type: "text_prompt_ext", inputs: { TEXT: bTxt("Add meg:") } }
+                ] },
+                { kind: "category", name: "Logika", colour: "210", contents: [
+                    { kind: "block", type: "controls_if" },
+                    { kind: "block", type: "logic_compare" },
+                    { kind: "block", type: "logic_operation" },
+                    { kind: "block", type: "logic_negate" },
+                    { kind: "block", type: "logic_boolean" }
+                ] },
+                { kind: "category", name: "Ciklusok", colour: "120", contents: [
+                    { kind: "block", type: "controls_repeat_ext", inputs: { TIMES: bNum(10) } },
+                    { kind: "block", type: "controls_whileUntil" },
+                    { kind: "block", type: "controls_for", inputs: { FROM: bNum(1), TO: bNum(10), BY: bNum(1) } },
+                    { kind: "block", type: "controls_forEach" },
+                    { kind: "block", type: "controls_flow_statements" }
+                ] },
+                { kind: "category", name: "Matek", colour: "230", contents: [
+                    { kind: "block", type: "math_number" },
+                    { kind: "block", type: "math_arithmetic" },
+                    { kind: "block", type: "math_single" },
+                    { kind: "block", type: "math_modulo" },
+                    { kind: "block", type: "math_random_int", inputs: { FROM: bNum(1), TO: bNum(100) } }
+                ] },
+                { kind: "category", name: "Listák", colour: "260", contents: [
+                    { kind: "block", type: "lists_create_with" },
+                    { kind: "block", type: "lists_length" },
+                    { kind: "block", type: "lists_getIndex" },
+                    { kind: "block", type: "lists_setIndex" }
+                ] },
+                { kind: "category", name: "Változók", colour: "330", custom: "VARIABLE" },
+                { kind: "category", name: "Függvények", colour: "290", custom: "PROCEDURE" }
+            ]
+        };
+
+        function blocklyGen() {
+            if (typeof Blockly === "undefined") return null;
+            return (window.javascript && window.javascript.javascriptGenerator) || Blockly.JavaScript || null;
+        }
+        function blocklyXmlText() {
+            try { return Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(bWorkspace)); } catch (e) { return ""; }
+        }
+        function loadBlocklyXml(xml) {
+            const toDom = (Blockly.utils && Blockly.utils.xml && Blockly.utils.xml.textToDom) || Blockly.Xml.textToDom;
+            bWorkspace.clear();
+            Blockly.Xml.domToWorkspace(toDom(xml), bWorkspace);
+            lastTpl.blockly = blocklyXmlText();
+        }
+        function resizeBlockly() {
+            if (bWorkspace && typeof Blockly !== "undefined") Blockly.svgResize(bWorkspace);
+        }
+        function initBlockly() {
+            const host = $("blocklyDiv");
+            if (typeof Blockly === "undefined") { host.textContent = "A Blockly nem töltődött be. Frissítsd az oldalt."; return; }
+            window.blocklyInited = true;
+            try {
+                Blockly.Blocks["on_start"] = {
+                    init: function () {
+                        this.appendDummyInput().appendField("Indításkor");
+                        this.appendStatementInput("DO");
+                        this.setColour(45);
+                        this.setTooltip("Az itt lévő blokkok futnak le, amikor megnyomod a futtatás gombot.");
+                    }
+                };
+                const gen = blocklyGen();
+                if (gen) {
+                    const fn = (block, g) => (g || gen).statementToCode(block, "DO");
+                    if (gen.forBlock) gen.forBlock["on_start"] = fn; else gen["on_start"] = fn;
+                }
+                bWorkspace = Blockly.inject("blocklyDiv", {
+                    toolbox: BLOCKLY_TOOLBOX,
+                    trashcan: true,
+                    zoom: { controls: true, wheel: true },
+                    grid: { spacing: 20, length: 3, colour: "#ccc", snap: true }
+                });
+                loadBlocklyXml(TEMPLATES.blockly[0].xml);
+                requestAnimationFrame(resizeBlockly);
+            } catch (e) {
+                console.error(e);
+                host.textContent = "A Blockly indítása nem sikerült: " + e.message;
+            }
+        }
+        function blocklyHasStart() { return bWorkspace.getTopBlocks(false).some(b => b.type === "on_start"); }
+        function blocklyCode(useTrap) {
+            const gen = blocklyGen();
+            gen.INFINITE_LOOP_TRAP = useTrap ? 'if (--window.LoopTrap <= 0) throw "Végtelen ciklus.";\n' : null;
+            if (!blocklyHasStart()) return gen.workspaceToCode(bWorkspace);
+            gen.init(bWorkspace);
+            const parts = [];
+            bWorkspace.getTopBlocks(true).forEach(b => {
+                let line = gen.blockToCode(b);
+                if (Array.isArray(line)) line = line[0];
+                if (b.type === "on_start" && line) parts.push(line);
+            });
+            return gen.finish(parts.join("\n"));
+        }
+        function runBlockly() {
+            const codeBox = $("blockly-code-output"), out = $("blockly-output");
+            out.textContent = "";
+            if (!bWorkspace || !blocklyGen()) { codeBox.textContent = "A Blockly nem töltődött be. Frissítsd az oldalt."; return; }
+            try {
+                codeBox.textContent = (blocklyHasStart() ? "" : "// Nincs Indításkor blokk, ezért minden blokk lefut.\n") + blocklyCode(false);
+                const code = blocklyCode(true);
+                const c = makeConsole(out);
+                const oldAlert = window.alert;
+                window.alert = (...a) => c.log(...a);
+                window.LoopTrap = 1e6;
+                try { new Function("console", code)(c); } finally { window.alert = oldAlert; }
+            } catch (e) {
+                out.textContent += "\nHiba: " + (e && e.message ? e.message : e);
+            }
+        }
+
+        // ---------- 13. Regex ----------
+        function updateRegex() {
+            const out = $("regex-output"), stat = $("regex-stat");
+            try {
+                const pat = $("regex-pattern").value;
+                let flags = $("regex-flags").value;
+                const text = $("regex-test").value;
+                if (!pat) { out.textContent = text; stat.textContent = ""; return; }
+                if (!flags.includes("g")) flags += "g";
+                const re = new RegExp(pat, flags);
+                let html = "", last = 0, count = 0;
+                for (const m of text.matchAll(re)) {
+                    if (m[0] === "") continue;
+                    html += esc(text.slice(last, m.index)) + "<mark>" + esc(m[0]) + "</mark>";
+                    last = m.index + m[0].length;
+                    count++;
+                }
+                out.innerHTML = html + esc(text.slice(last));
+                stat.textContent = count + " találat";
+            } catch (e) {
+                out.textContent = "Helytelen Regex minta: " + e.message;
+                stat.textContent = "";
+            }
+        }
+
+        // ---------- 14. Kaboom (Játék) ----------
+        function runGame() {
+            const code = gameEditor.getValue();
+            const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:#000}' +
+                '#err{position:fixed;left:0;right:0;bottom:0;margin:0;padding:8px 12px;background:#b3261e;color:#fff;font:13px monospace;white-space:pre-wrap;display:none;z-index:9}</style></head><body>' +
+                '<pre id="err"></pre>' +
+                '<script>window.addEventListener("error",function(e){var b=document.getElementById("err");b.style.display="block";b.textContent+=(e.message||"Hiba")+"\\n";});<\/script>' +
+                '<script src="https://unpkg.com/kaboom@3000.1.17/dist/kaboom.js"><\/script>' +
+                '<script>' + code + '\n<\/script></body></html>';
+            $("game-render").srcdoc = html;
+        }
+
+        // ---------- 15. Sablonok ----------
+        const S = "<" + "script>", E = "<\/script>";
+
+        const TEMPLATES = {
+            html: [
+                { name: "Üres váz", code: `<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Új oldal</title>
+</head>
+<body>
+    <h1>Cím</h1>
+    <p>Ide írd a szöveget.</p>
+</body>
+</html>` },
+                { name: "Lista és linkek", code: `<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista és linkek</title>
+</head>
+<body>
+    <h1>Kedvenc oldalaim</h1>
+    <ul>
+        <li><a href="https://hu.wikipedia.org">Wikipédia</a></li>
+        <li><a href="https://www.youtube.com">YouTube</a></li>
+    </ul>
+
+    <h2>Bevásárlólista</h2>
+    <ol>
+        <li>Kenyér</li>
+        <li>Tej</li>
+        <li>Alma</li>
+    </ol>
+</body>
+</html>` },
+                { name: "Táblázat", code: `<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Táblázat</title>
+    <style>
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #333; padding: 6px 12px; text-align: left; }
+        th { background-color: #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Órarend</h1>
+    <table>
+        <tr><th>Óra</th><th>Hétfő</th><th>Kedd</th></tr>
+        <tr><td>1.</td><td>Matematika</td><td>Informatika</td></tr>
+        <tr><td>2.</td><td>Történelem</td><td>Angol</td></tr>
+        <tr><td>3.</td><td>Informatika</td><td>Testnevelés</td></tr>
+    </table>
+</body>
+</html>` },
+                { name: "Űrlap", code: `<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Űrlap</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Jelentkezés</h1>
+    <form>
+        <label>Név: <input type="text" name="nev"></label>
+        <label>Életkor: <input type="number" name="kor" min="1" max="120"></label>
+        <label>E-mail: <input type="email" name="email"></label>
+        <label>Tantárgy:
+            <select name="tantargy">
+                <option>Matematika</option>
+                <option>Informatika</option>
+                <option>Angol</option>
+            </select>
+        </label>
+        <label><input type="checkbox" name="elfogad"> Elfogadom a feltételeket</label>
+        <button type="submit">Küldés</button>
+    </form>
+</body>
+</html>` },
+                { name: "Flexbox elrendezés", code: `<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Flexbox</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        .sor {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+        }
+        .doboz {
+            flex: 1;
+            padding: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        .a { background-color: #c8401b; }
+        .b { background-color: #2a6f97; }
+        .c { background-color: #3a7d44; }
+    </style>
+</head>
+<body>
+    <div class="sor">
+        <div class="doboz a">Első</div>
+        <div class="doboz b">Második</div>
+        <div class="doboz c">Harmadik</div>
+    </div>
+</body>
+</html>` },
+                { name: "JavaScript gomb", code: `<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Számláló</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 60px; }
+        button { font-size: 20px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1 id="szam">0</h1>
+    <button id="gomb">Kattints ide</button>
+
+    ${S}
+        let db = 0;
+        const szam = document.getElementById("szam");
+        document.getElementById("gomb").addEventListener("click", function () {
+            db = db + 1;
+            szam.textContent = db;
+        });
+    ${E}
+</body>
+</html>` }
+            ],
+
+            python: [
+                { name: "Teknőc: csillag", mode: "turtle", code: `import turtle
+
+t = turtle.Turtle()
+t.speed(10)
+t.color("blue")
+
+for i in range(5):
+    t.forward(150)
+    t.right(144)
+` },
+                { name: "Teknőc: színes spirál", mode: "turtle", code: `import turtle
+
+t = turtle.Turtle()
+t.speed(0)
+szinek = ["red", "orange", "green", "blue", "purple"]
+
+for i in range(60):
+    t.color(szinek[i % 5])
+    t.forward(i * 4)
+    t.left(91)
+` },
+                { name: "Teknőc: körök", mode: "turtle", code: `import turtle
+
+t = turtle.Turtle()
+t.speed(10)
+t.pensize(2)
+t.color("green")
+
+for i in range(8):
+    t.circle(60)
+    t.left(45)
+` },
+                { name: "Alapok: változók és kiírás", mode: "normal", code: `nev = "Ádám"
+kor = 17
+print("Szia, " + nev + "!")
+print("Ennyi éves vagy:", kor)
+print("Jövőre", kor + 1, "éves leszel.")
+
+if kor >= 18:
+    print("Felnőtt vagy.")
+else:
+    print("Még nem vagy felnőtt.")
+` },
+                { name: "Ciklusok", mode: "normal", code: `# for ciklus
+for i in range(1, 6):
+    print("Lépés:", i)
+
+# while ciklus
+szam = 10
+while szam > 0:
+    print(szam)
+    szam = szam - 3
+
+# szorzótábla
+for i in range(1, 11):
+    print("7 x", i, "=", 7 * i)
+` },
+                { name: "Függvények", mode: "normal", code: `def negyzet(x):
+    return x * x
+
+def koszon(nev, hangosan=False):
+    szoveg = "Szia " + nev + "!"
+    if hangosan:
+        szoveg = szoveg.upper()
+    return szoveg
+
+print(negyzet(6))
+print(koszon("Anna"))
+print(koszon("Béla", True))
+` },
+                { name: "Lista és szótár", mode: "normal", code: `gyumolcsok = ["alma", "körte", "szilva"]
+gyumolcsok.append("cseresznye")
+print(gyumolcsok)
+print("Darab:", len(gyumolcsok))
+
+for g in gyumolcsok:
+    print("- " + g)
+
+diak = {"nev": "Anna", "kor": 17}
+diak["osztaly"] = "11.A"
+for kulcs in diak:
+    print(kulcs, "=", diak[kulcs])
+` },
+                { name: "Számkitalálós (input)", mode: "normal", code: `import random
+
+titkos = random.randint(1, 10)
+tipp = int(input("Tippelj egy számot 1 és 10 között: "))
+
+if tipp == titkos:
+    print("Talált!")
+elif tipp < titkos:
+    print("Nagyobb a szám. A titkos szám:", titkos)
+else:
+    print("Kisebb a szám. A titkos szám:", titkos)
+` }
+            ],
+
+            sql: [
+                { name: "Szűrés és rendezés", code: `SELECT nev, kor
+FROM diakok
+WHERE kor >= 17
+ORDER BY nev;` },
+                { name: "Összesítés (GROUP BY)", code: `SELECT osztaly, COUNT(*) AS letszam, AVG(kor) AS atlagkor
+FROM diakok
+GROUP BY osztaly;` },
+                { name: "Több tábla (JOIN)", code: `SELECT diakok.nev, tantargyak.nev AS tantargy, jegyek.jegy
+FROM jegyek
+JOIN diakok ON diakok.id = jegyek.diak_id
+JOIN tantargyak ON tantargyak.id = jegyek.tantargy_id
+ORDER BY diakok.nev;` },
+                { name: "Átlagok tantárgyanként", code: `SELECT tantargyak.nev AS tantargy, ROUND(AVG(jegyek.jegy), 2) AS atlag
+FROM jegyek
+JOIN tantargyak ON tantargyak.id = jegyek.tantargy_id
+GROUP BY tantargyak.nev
+ORDER BY atlag DESC;` },
+                { name: "Új sor (INSERT)", code: `INSERT INTO diakok (nev, osztaly, kor) VALUES ('Új Diák', '11.B', 17);
+
+SELECT * FROM diakok;` },
+                { name: "Módosítás és törlés", code: `UPDATE diakok SET osztaly = '12.A' WHERE nev = 'Kiss Anna';
+DELETE FROM diakok WHERE kor < 17;
+
+SELECT * FROM diakok;` },
+                { name: "Új tábla", code: `CREATE TABLE konyvek (
+    id INTEGER PRIMARY KEY,
+    cim TEXT NOT NULL,
+    ev INTEGER
+);
+
+INSERT INTO konyvek (cim, ev) VALUES ('Egri csillagok', 1901), ('A Pál utcai fiúk', 1906);
+
+SELECT * FROM konyvek;` }
+            ],
+
+            md: [
+                { name: "Rövid jegyzet", code: `# Jegyzet: hálózatok
+
+## Fő pontok
+
+- Az **IP-cím** azonosítja a gépet.
+- A *router* összeköti a hálózatokat.
+- A DNS a neveket címekre fordítja.
+
+## Teendők
+
+- [x] Elolvasni a fejezetet
+- [ ] Megcsinálni a feladatot
+
+> Tipp: a jegyzetet érdemes saját szavakkal leírni.
+` },
+                { name: "Táblázat", code: `# Jegyek
+
+| Név | Tantárgy | Jegy |
+|-----|----------|------|
+| Anna | Matematika | 5 |
+| Béla | Informatika | 4 |
+| Csilla | Angol | 5 |
+
+A táblázatban a \`|\` jel választja el az oszlopokat.
+` },
+                { name: "README váz", code: `# Projekt neve
+
+Egy mondat arról, hogy mit csinál a program.
+
+## Telepítés
+
+1. Töltsd le a fájlokat.
+2. Nyisd meg az \`index.html\` fájlt.
+
+## Használat
+
+\`\`\`python
+print("Helló")
+\`\`\`
+
+## Készítő
+
+Neved
+` }
+            ],
+
+            ts: [
+                { name: "Függvények és típusok", code: `function osszead(a: number, b: number): number {
+    return a + b;
+}
+console.log(osszead(2, 3));
+
+type Azonosito = string | number;
+let id: Azonosito = 42;
+id = "abc-1";
+console.log("Azonosító: " + id);
+
+function koszon(nev: string, kor?: number): string {
+    if (kor !== undefined) {
+        return "Szia " + nev + ", " + kor + " éves vagy.";
+    }
+    return "Szia " + nev + "!";
+}
+console.log(koszon("Anna"));
+console.log(koszon("Béla", 17));
+` },
+                { name: "Osztály", code: `class Allat {
+    constructor(public nev: string, private hang: string) {}
+
+    szol(): string {
+        return this.nev + " azt mondja: " + this.hang;
+    }
+}
+
+class Kutya extends Allat {
+    constructor(nev: string) {
+        super(nev, "vau");
+    }
+}
+
+const k = new Kutya("Bodri");
+console.log(k.szol());
+` },
+                { name: "Tömbök és ciklusok", code: `const szamok: number[] = [5, 3, 8, 1];
+
+for (const szam of szamok) {
+    console.log("Szám: " + szam);
+}
+
+const duplak = szamok.map((x) => x * 2);
+console.log(duplak);
+
+const nagyok = szamok.filter((x) => x > 4);
+console.log(nagyok);
+
+const osszeg = szamok.reduce((a, b) => a + b, 0);
+console.log("Összeg: " + osszeg);
+
+console.log(szamok.sort((a, b) => a - b));
+` }
+            ],
+
+            lua: [
+                { name: "Táblák (listák)", code: `local gyumolcsok = {"alma", "körte", "szilva"}
+table.insert(gyumolcsok, "cseresznye")
+print("Darab: " .. #gyumolcsok)
+
+for i, g in ipairs(gyumolcsok) do
+    print(i, g)
+end
+
+local jatekos = { nev = "Benedek", pont = 10 }
+jatekos.pont = jatekos.pont + 5
+print(jatekos.nev .. " pontja: " .. jatekos.pont)
+` },
+                { name: "Függvények", code: `local function negyzet(x)
+    return x * x
+end
+
+local function faktorialis(n)
+    if n <= 1 then
+        return 1
+    end
+    return n * faktorialis(n - 1)
+end
+
+print(negyzet(7))
+print(faktorialis(5))
+` },
+                { name: "FizzBuzz", code: `for i = 1, 15 do
+    if i % 15 == 0 then
+        print("FizzBuzz")
+    elseif i % 3 == 0 then
+        print("Fizz")
+    elseif i % 5 == 0 then
+        print("Buzz")
+    else
+        print(i)
+    end
+end
+` }
+            ],
+
+            php: [
+                { name: "Függvények", code: R`<?php
+function koszon($nev) {
+    return "Szia " . $nev . "!";
+}
+
+function osszead($a, $b) {
+    return $a + $b;
+}
+
+echo koszon("Anna") . "\n";
+echo "2 + 3 = " . osszead(2, 3) . "\n";
+?>` },
+                { name: "Tömbök", code: R`<?php
+$diak = array("nev" => "Anna", "kor" => 17, "osztaly" => "11.A");
+$diak["jegy"] = 5;
+
+foreach ($diak as $kulcs => $ertek) {
+    echo $kulcs . ": " . $ertek . "\n";
+}
+
+echo "Elemek száma: " . count($diak) . "\n";
+?>` },
+                { name: "Ciklusok és feltételek", code: R`<?php
+for ($i = 1; $i <= 10; $i++) {
+    if ($i <= 5) {
+        echo $i . " kicsi\n";
+    } else {
+        echo $i . " nagy\n";
+    }
+}
+
+$x = 3;
+while ($x > 0) {
+    echo "Visszaszámlálás: " . $x . "\n";
+    $x--;
+}
+?>` }
+            ],
+
+            blockly: [
+                { name: "Helló világ", xml: `<xml xmlns="https://developers.google.com/blockly/xml">
+<block type="on_start" x="30" y="30"><statement name="DO">
+<block type="text_print"><value name="TEXT"><block type="text"><field name="TEXT">Helló világ!</field></block></value></block>
+</statement></block></xml>` },
+                { name: "Ismétlés", xml: `<xml xmlns="https://developers.google.com/blockly/xml">
+<block type="on_start" x="30" y="30"><statement name="DO">
+<block type="controls_repeat_ext"><value name="TIMES"><shadow type="math_number"><field name="NUM">5</field></shadow></value>
+<statement name="DO"><block type="text_print"><value name="TEXT"><block type="text"><field name="TEXT">Szia!</field></block></value></block></statement></block>
+</statement></block></xml>` },
+                { name: "Számolás 1-től 10-ig", xml: `<xml xmlns="https://developers.google.com/blockly/xml">
+<variables><variable id="vi">i</variable></variables>
+<block type="on_start" x="30" y="30"><statement name="DO">
+<block type="controls_for"><field name="VAR" id="vi">i</field>
+<value name="FROM"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+<value name="TO"><shadow type="math_number"><field name="NUM">10</field></shadow></value>
+<value name="BY"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+<statement name="DO"><block type="text_print"><value name="TEXT"><block type="variables_get"><field name="VAR" id="vi">i</field></block></value></block></statement></block>
+</statement></block></xml>` },
+                { name: "Összeg változóval", xml: `<xml xmlns="https://developers.google.com/blockly/xml">
+<variables><variable id="vo">osszeg</variable><variable id="vi">i</variable></variables>
+<block type="on_start" x="30" y="30"><statement name="DO">
+<block type="variables_set"><field name="VAR" id="vo">osszeg</field><value name="VALUE"><block type="math_number"><field name="NUM">0</field></block></value>
+<next><block type="controls_for"><field name="VAR" id="vi">i</field>
+<value name="FROM"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+<value name="TO"><shadow type="math_number"><field name="NUM">10</field></shadow></value>
+<value name="BY"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+<statement name="DO"><block type="variables_set"><field name="VAR" id="vo">osszeg</field><value name="VALUE"><block type="math_arithmetic"><field name="OP">ADD</field>
+<value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow><block type="variables_get"><field name="VAR" id="vo">osszeg</field></block></value>
+<value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow><block type="variables_get"><field name="VAR" id="vi">i</field></block></value></block></value></block></statement>
+<next><block type="text_print"><value name="TEXT"><block type="text_join"><mutation items="2"></mutation>
+<value name="ADD0"><block type="text"><field name="TEXT">Az összeg: </field></block></value>
+<value name="ADD1"><block type="variables_get"><field name="VAR" id="vo">osszeg</field></block></value></block></value></block></next></block></next></block>
+</statement></block></xml>` },
+                { name: "Ha-akkor-különben", xml: `<xml xmlns="https://developers.google.com/blockly/xml">
+<variables><variable id="vk">kor</variable></variables>
+<block type="on_start" x="30" y="30"><statement name="DO">
+<block type="variables_set"><field name="VAR" id="vk">kor</field><value name="VALUE"><block type="math_number"><field name="NUM">17</field></block></value>
+<next><block type="controls_if"><mutation else="1"></mutation>
+<value name="IF0"><block type="logic_compare"><field name="OP">GTE</field>
+<value name="A"><block type="variables_get"><field name="VAR" id="vk">kor</field></block></value>
+<value name="B"><block type="math_number"><field name="NUM">18</field></block></value></block></value>
+<statement name="DO0"><block type="text_print"><value name="TEXT"><block type="text"><field name="TEXT">Felnőtt vagy.</field></block></value></block></statement>
+<statement name="ELSE"><block type="text_print"><value name="TEXT"><block type="text"><field name="TEXT">Még nem vagy felnőtt.</field></block></value></block></statement></block></next></block>
+</statement></block></xml>` },
+                { name: "Függvény", xml: `<xml xmlns="https://developers.google.com/blockly/xml">
+<block type="procedures_defnoreturn" x="30" y="200"><field name="NAME">koszon</field>
+<statement name="STACK"><block type="text_print"><value name="TEXT"><block type="text"><field name="TEXT">Szia a függvényből!</field></block></value></block></statement></block>
+<block type="on_start" x="30" y="30"><statement name="DO">
+<block type="procedures_callnoreturn"><mutation name="koszon"></mutation>
+<next><block type="procedures_callnoreturn"><mutation name="koszon"></mutation></block></next></block>
+</statement></block></xml>` }
+            ],
+
+            regex: [
+                { name: "E-mail cím", pattern: R`[\w.+-]+@[\w-]+\.[\w.]+`, flags: "gi", text: "Írj nekem: anna@example.com vagy béla.kiss@iskola.hu\nEz nem e-mail: kukac@ vagy @valami" },
+                { name: "Telefonszám", pattern: R`(\+36|06)[ -]?\d{1,2}[ -]?\d{3}[ -]?\d{3,4}`, flags: "g", text: "Hívj: +36 30 123 4567 vagy 06-20-987-6543.\nA 12345 nem telefonszám." },
+                { name: "Számok", pattern: R`\d+`, flags: "g", text: "A 3 alma 250 forint, a 12 körte 1800 forint." },
+                { name: "Dátum (ÉÉÉÉ-HH-NN)", pattern: R`\d{4}-\d{2}-\d{2}`, flags: "g", text: "Ma 2025-03-14 van, a dolgozat 2025-04-02 lesz." },
+                { name: "Nagybetűs szavak", pattern: R`\p{Lu}\p{Ll}+`, flags: "gu", text: "Anna és Béla elutazott Egerbe, aztán Szegedre." },
+                { name: "Hex színkód", pattern: R`#[0-9a-fA-F]{6}\b`, flags: "g", text: "Piros: #ff0000, zöld: #00aa00, ez nem az: #12345." }
+            ],
+
+            game: [
+                { name: "Mozgatás és érmék", code: `kaboom();
+loadBean();
+
+let pont = 0;
+const felirat = add([text("Pont: 0", { size: 24 }), pos(12, 12), fixed()]);
+
+const jatekos = add([
+    sprite("bean"),
+    pos(center()),
+    anchor("center"),
+    area(),
+]);
+
+onKeyDown("left", () => jatekos.move(-260, 0));
+onKeyDown("right", () => jatekos.move(260, 0));
+onKeyDown("up", () => jatekos.move(0, -260));
+onKeyDown("down", () => jatekos.move(0, 260));
+
+function ujErme() {
+    add([
+        circle(12),
+        pos(rand(30, width() - 30), rand(60, height() - 30)),
+        anchor("center"),
+        color(255, 200, 0),
+        area(),
+        "erme",
+    ]);
+}
+for (let i = 0; i < 5; i++) ujErme();
+
+jatekos.onCollide("erme", (e) => {
+    destroy(e);
+    pont++;
+    felirat.text = "Pont: " + pont;
+    ujErme();
+});
+` },
+                { name: "Kerüld ki az ellenséget", code: `kaboom();
+loadBean();
+
+const jatekos = add([
+    sprite("bean"),
+    pos(width() / 2, height() - 60),
+    anchor("center"),
+    area(),
+]);
+
+onKeyDown("left", () => { if (jatekos.exists()) jatekos.move(-300, 0); });
+onKeyDown("right", () => { if (jatekos.exists()) jatekos.move(300, 0); });
+
+loop(0.6, () => {
+    add([
+        rect(30, 30),
+        pos(rand(0, width() - 30), -30),
+        color(255, 60, 60),
+        area(),
+        move(DOWN, rand(150, 320)),
+        offscreen({ destroy: true }),
+        "ellenseg",
+    ]);
+});
+
+jatekos.onCollide("ellenseg", () => {
+    addKaboom(jatekos.pos);
+    shake(20);
+    destroy(jatekos);
+    add([text("Vége!"), pos(center()), anchor("center")]);
+});
+` },
+                { name: "Kattintós játék", code: `kaboom();
+
+let pont = 0;
+const felirat = add([
+    text("Kattints a körre!", { size: 28 }),
+    pos(center().x, 40),
+    anchor("center"),
+]);
+
+const kor = add([
+    circle(60),
+    pos(center()),
+    anchor("center"),
+    color(255, 120, 0),
+    area(),
+]);
+
+kor.onClick(() => {
+    pont++;
+    felirat.text = "Pont: " + pont;
+    kor.pos = vec2(rand(80, width() - 80), rand(100, height() - 80));
+});
+` }
+            ]
+        };
+
+        // ---------- 16. Puskázók ----------
+        const cheat = cols => '<div class="cols">' + cols.map(([title, rows]) =>
+            "<div><h4>" + esc(title) + "</h4><ul>" +
+            rows.map(([c, d]) => "<li><code>" + esc(c) + "</code> " + esc(d) + "</li>").join("") +
+            "</ul></div>").join("") + "</div>";
+
+        const CHEATS = {
+            html: cheat([
+                ["Szerkezet", [
+                    ["<h1>Cím</h1>", "főcím, h1 a legnagyobb, h6 a legkisebb"],
+                    ["<p>Szöveg</p>", "bekezdés"],
+                    ["<a href=\"https://...\">link</a>", "hivatkozás"],
+                    ["<img src=\"kep.png\" alt=\"leírás\">", "kép"],
+                    ["<ul><li>elem</li></ul>", "felsorolás, az ol számozott"],
+                    ["<div>", "doboz, több elem összefogására"],
+                    ["<header> <main> <footer>", "az oldal fő részei"]
+                ]],
+                ["Szöveg és űrlap", [
+                    ["<strong>", "félkövér"],
+                    ["<em>", "dőlt"],
+                    ["<br>", "sortörés"],
+                    ["<table><tr><td>", "táblázat, sor, cella"],
+                    ["<input type=\"text\">", "beviteli mező"],
+                    ["<button>Gomb</button>", "gomb"]
+                ]],
+                ["CSS", [
+                    ["color: red;", "betűszín"],
+                    ["background-color: #eee;", "háttérszín"],
+                    ["font-size: 20px;", "betűméret"],
+                    ["margin: 10px;", "külső hely"],
+                    ["padding: 10px;", "belső hely"],
+                    ["border: 1px solid black;", "szegély"],
+                    ["display: flex;", "elemek egymás mellé"],
+                    ["text-align: center;", "középre igazítás"]
+                ]]
+            ]) + '<p class="note">Kattints egy rgb(...) vagy #rrggbb színkódba, és megjelenik a színválasztó.</p>',
+
+            python: cheat([
+                ["Normál Python", [
+                    ["print(\"Szia\")", "szöveg kiírása"],
+                    ["szam = 10", "változó létrehozása"],
+                    ["nev = input(\"Név: \")", "adat bekérése"],
+                    ["if szam > 5:", "ha..."],
+                    ["for i in range(5):", "ciklus, 5-ször fut le"],
+                    ["while x < 10:", "ciklus, amíg igaz a feltétel"],
+                    ["def f(x): return x", "függvény"],
+                    ["lista = [1, 2, 3]", "lista, a lista.append(4) hozzáad egyet"],
+                    ["import random", "véletlen számokhoz: random.randint(1, 6)"]
+                ]],
+                ["Teknőc (Turtle)", [
+                    ["import turtle", "modul betöltése"],
+                    ["t = turtle.Turtle()", "teknőc létrehozása"],
+                    ["t.forward(100)", "előre, a backward hátra"],
+                    ["t.right(90)", "fordulás jobbra, a left balra"],
+                    ["t.penup() / t.pendown()", "toll fel / le"],
+                    ["t.color(\"red\")", "szín"],
+                    ["t.pensize(5)", "vonalvastagság"],
+                    ["t.circle(50)", "kör rajzolása"],
+                    ["t.speed(0)", "leggyorsabb rajzolás"]
+                ]]
+            ]),
+
+            sql: cheat([
+                ["Lekérdezés", [
+                    ["SELECT * FROM diakok;", "minden sor és oszlop"],
+                    ["SELECT nev, kor FROM diakok;", "csak két oszlop"],
+                    ["WHERE kor > 15", "szűrés feltétellel"],
+                    ["WHERE nev LIKE 'K%'", "K betűvel kezdődő nevek"],
+                    ["ORDER BY nev DESC", "rendezés, fordított sorrendben"],
+                    ["LIMIT 3", "csak az első 3 sor"]
+                ]],
+                ["Összesítés és kapcsolás", [
+                    ["COUNT(*)", "sorok száma"],
+                    ["AVG(jegy), MIN(), MAX(), SUM()", "átlag, legkisebb, legnagyobb, összeg"],
+                    ["GROUP BY osztaly", "csoportonként számol"],
+                    ["JOIN jegyek ON diakok.id = jegyek.diak_id", "két tábla összekapcsolása"]
+                ]],
+                ["Adatok módosítása", [
+                    ["INSERT INTO diakok (nev) VALUES ('Név');", "új sor"],
+                    ["UPDATE diakok SET kor = 17 WHERE id = 1;", "módosítás"],
+                    ["DELETE FROM diakok WHERE id = 1;", "törlés"],
+                    ["CREATE TABLE t (id INTEGER, nev TEXT);", "új tábla"]
+                ]]
+            ]) + '<p class="note">Elrontottad az adatokat? Az „Adatbázis visszaállítása” gomb újra létrehozza az alap táblákat.</p>',
+
+            md: cheat([
+                ["Szöveg", [
+                    ["# Cím", "főcím, ## alcím, ### kisebb"],
+                    ["**félkövér**", "félkövér szöveg"],
+                    ["*dőlt*", "dőlt szöveg"],
+                    ["~~áthúzott~~", "áthúzott szöveg"],
+                    ["> idézet", "idézet"],
+                    ["---", "vízszintes vonal"]
+                ]],
+                ["Listák és linkek", [
+                    ["- elem", "felsorolás"],
+                    ["1. elem", "számozott lista"],
+                    ["- [ ] feladat", "feladatlista, [x] a kész"],
+                    ["[szöveg](https://...)", "link"],
+                    ["![leírás](kep.png)", "kép"]
+                ]],
+                ["Kód és táblázat", [
+                    ["`kód`", "kód a mondatban"],
+                    ["``` (három visszafelé aposztróf)", "kódblokk nyitása és zárása"],
+                    ["| A | B |", "táblázat, alatta a |---|---| sor kell"]
+                ]]
+            ]),
+
+            ts: cheat([
+                ["Típusok", [
+                    ["let x: number = 5;", "szám"],
+                    ["let s: string = \"szia\";", "szöveg"],
+                    ["let b: boolean = true;", "igaz / hamis"],
+                    ["let t: number[] = [1, 2];", "számok tömbje"],
+                    ["let v: string | number;", "kétféle típus lehet"]
+                ]],
+                ["Szerkezetek", [
+                    ["function f(a: number): number {}", "függvény típusokkal"],
+                    ["interface Diak { nev: string; }", "objektum alakja"],
+                    ["type Id = string | number;", "saját típusnév"],
+                    ["class Kutya { }", "osztály"],
+                    ["console.log(x);", "kiírás a kimenetre"],
+                    ["const f = (a) => a * 2;", "nyíl függvény"]
+                ]]
+            ]) + '<p class="note">A fordító csak a szintaktikai hibákat jelzi, a típushibákat nem.</p>',
+
+            lua: cheat([
+                ["Alapok", [
+                    ["local x = 5", "változó"],
+                    ["print(\"szia\")", "kiírás"],
+                    ["\"a\" .. \"b\"", "szövegek összefűzése"],
+                    ["x ~= 3", "nem egyenlő"],
+                    ["-- megjegyzés", "megjegyzés"],
+                    ["nil", "üres érték"]
+                ]],
+                ["Vezérlés", [
+                    ["if x > 3 then ... elseif ... else ... end", "elágazás"],
+                    ["for i = 1, 10 do ... end", "számláló ciklus"],
+                    ["while x < 10 do ... end", "feltételes ciklus"],
+                    ["function f(a) return a end", "függvény"]
+                ]],
+                ["Táblák", [
+                    ["local t = {1, 2, 3}", "lista"],
+                    ["#t", "hossz"],
+                    ["table.insert(t, 4)", "elem hozzáadása"],
+                    ["t.nev = \"Máté\"", "kulcs-érték pár"],
+                    ["for i, v in ipairs(t) do", "lista bejárása"],
+                    ["for k, v in pairs(t) do", "kulcsok bejárása"]
+                ]]
+            ]),
+
+            php: cheat([
+                ["Alapok", [
+                    ["<?php ... ?>", "PHP kód kezdete és vége"],
+                    ["$x = 5;", "változó, mindig $ jellel"],
+                    ["echo \"szöveg\";", "kiírás"],
+                    ["\"a\" . \"b\"", "szövegek összefűzése"],
+                    ["\"\\n\"", "új sor a kimenetben"]
+                ]],
+                ["Vezérlés", [
+                    ["if ($x > 3) { } elseif { } else { }", "elágazás"],
+                    ["for ($i = 0; $i < 5; $i++) { }", "számláló ciklus"],
+                    ["while ($x < 10) { }", "feltételes ciklus"],
+                    ["foreach ($lista as $elem) { }", "lista bejárása"],
+                    ["function f($a) { return $a; }", "függvény"]
+                ]],
+                ["Tömbök és szövegek", [
+                    ["$t = array(1, 2, 3);", "tömb"],
+                    ["$t[\"kulcs\"] = 1;", "kulcs-érték pár"],
+                    ["count($t)", "elemek száma"],
+                    ["strlen(\"szó\")", "szöveg hossza"],
+                    ["strtoupper(\"szó\")", "nagybetűssé alakítás"]
+                ]]
+            ]) + '<p class="note">Ez egy böngészős PHP motor (Uniter). Nem működik benne például a % művelet, a floor() és az intval().</p>',
+
+            blockly: cheat([
+                ["Használat", [
+                    ["Indításkor", "csak az ebbe tett blokkok futnak le"],
+                    ["Húzás", "blokkot a bal oldali menüből a munkaterületre húzol"],
+                    ["Összekapcsolás", "a blokkok egymás alá illeszkednek"],
+                    ["Törlés", "blokk kijelölése és Delete, vagy a kuka"],
+                    ["Futtatás", "a gomb legenerálja a JavaScript kódot és lefuttatja"]
+                ]],
+                ["Kategóriák", [
+                    ["Kiírás és szöveg", "kiírás, szöveg, szövegek összefűzése, bekérés"],
+                    ["Logika", "ha-akkor, összehasonlítás, és / vagy"],
+                    ["Ciklusok", "ismétlés, while, számláló ciklus"],
+                    ["Változók", "névvel eltárolt értékek"],
+                    ["Függvények", "saját blokk, többször is használható"]
+                ]]
+            ]) + '<p class="note">Ha nincs Indításkor blokk a munkaterületen, minden blokk lefut.</p>',
+
+            regex: cheat([
+                ["Jelek", [
+                    [".", "bármelyik karakter"],
+                    ["\\d", "számjegy"],
+                    ["\\w", "betű, szám vagy _"],
+                    ["\\s", "szóköz, tabulátor, sortörés"],
+                    ["^  $", "sor eleje, sor vége"],
+                    ["\\b", "szó határa"]
+                ]],
+                ["Ismétlés és választás", [
+                    ["a*", "nulla vagy több a"],
+                    ["a+", "egy vagy több a"],
+                    ["a?", "nulla vagy egy a"],
+                    ["a{3}", "pontosan 3 a"],
+                    ["[abc]", "a, b vagy c"],
+                    ["[^abc]", "bármi, ami nem a, b vagy c"],
+                    ["(kutya|macska)", "az egyik vagy a másik"]
+                ]],
+                ["Zászlók", [
+                    ["g", "minden találat (itt mindig be van kapcsolva)"],
+                    ["i", "kis- és nagybetű mindegy"],
+                    ["m", "^ és $ soronként"],
+                    ["u", "Unicode, a \\p{Lu} nagybetű"]
+                ]]
+            ]),
+
+            game: cheat([
+                ["Alapok", [
+                    ["kaboom();", "a játék indítása, mindig az első sor"],
+                    ["loadBean();", "a beépített bean karakter betöltése"],
+                    ["add([ ... ])", "új játékobjektum, komponensek listájával"],
+                    ["setGravity(1600);", "gravitáció erőssége"],
+                    ["destroy(obj)", "objektum törlése"],
+                    ["rand(a, b)", "véletlen szám"]
+                ]],
+                ["Komponensek", [
+                    ["sprite(\"bean\")", "kép"],
+                    ["pos(x, y)", "hely"],
+                    ["rect(w, h) / circle(r)", "négyszög / kör"],
+                    ["color(r, g, b)", "szín"],
+                    ["area()", "ütközés érzékelése"],
+                    ["body()", "gravitáció hat rá"],
+                    ["body({ isStatic: true })", "fix talaj (a régi solid() helyett)"],
+                    ["text(\"Szia\")", "szöveg"],
+                    ["\"neve\"", "címke, ütközéshez használható"]
+                ]],
+                ["Események", [
+                    ["onKeyDown(\"left\", fn)", "amíg nyomod a gombot"],
+                    ["onKeyPress(\"space\", fn)", "gombnyomáskor egyszer"],
+                    ["onClick(fn)", "kattintáskor"],
+                    ["obj.onCollide(\"neve\", fn)", "ütközéskor"],
+                    ["loop(1, fn)", "másodpercenként ismétel"],
+                    ["obj.move(x, y)", "mozgatás"],
+                    ["obj.jump()", "ugrás, body() kell hozzá"]
+                ]]
+            ])
+        };
+
+        // ---------- 17. Sablon- és puskázó felület ----------
+        const lastTpl = {};
+        const LANGS = {
+            html: { ws: "html-workspace", ed: htmlEditor, first: "Kezdő oldal" },
+            python: { ws: "python-workspace", ed: pythonEditor, first: "Teknőc: négyzet" },
+            sql: { ws: "sql-workspace", ed: sqlEditor, first: "Minden diák" },
+            md: { ws: "md-workspace", ed: mdEditor, first: "Minden elem" },
+            ts: { ws: "ts-workspace", ed: tsEditor, first: "Alapok" },
+            lua: { ws: "lua-workspace", ed: luaEditor, first: "Alapok" },
+            php: { ws: "php-workspace", ed: phpEditor, first: "Alapok" },
+            game: { ws: "game-workspace", ed: gameEditor, first: "Ugráló karakter" },
+            blockly: { ws: "blockly-workspace" },
+            regex: { ws: "regex-workspace" }
+        };
+
+        function refreshLayout() {
+            Object.values(editors).forEach(ed => ed.refresh());
+            resizeBlockly();
+        }
+
+        function loadTemplate(key, i) {
+            const L = LANGS[key], t = TEMPLATES[key][i];
+            if (L.ed) {
+                if (L.ed.getValue() !== lastTpl[key] && !confirm("A mostani kód el fog veszni. Betöltöd a sablont?")) return;
+                L.ed.setValue(t.code);
+                L.ed.clearHistory();
+                lastTpl[key] = t.code;
+                if (key === "python" && t.mode) setPythonMode(t.mode);
+            } else if (key === "blockly") {
+                if (!bWorkspace) initBlockly();
+                if (!bWorkspace) return;
+                if (blocklyXmlText() !== lastTpl.blockly && !confirm("A mostani blokkok el fognak veszni. Betöltöd a sablont?")) return;
+                loadBlocklyXml(t.xml);
+            } else if (key === "regex") {
+                $("regex-pattern").value = t.pattern;
+                $("regex-flags").value = t.flags;
+                $("regex-test").value = t.text;
+                updateRegex();
+            }
+        }
+
+        function setupTools(key) {
+            const L = LANGS[key];
+            const bar = $(L.ws).querySelector(".left-pane .toolbar");
+            let group = bar.querySelector(".group");
+            if (!group) {
+                group = el("div", "group");
+                [...bar.children].filter(c => c.tagName === "BUTTON").forEach(b => group.appendChild(b));
+                bar.appendChild(group);
+            }
+            const sel = el("select", "btn");
+            sel.setAttribute("aria-label", "Sablonok");
+            sel.appendChild(new Option("Sablonok...", ""));
+            TEMPLATES[key].forEach((t, i) => sel.appendChild(new Option(t.name, i)));
+            sel.addEventListener("change", () => {
+                if (sel.value !== "") loadTemplate(key, +sel.value);
+                sel.value = "";
+            });
+            const cheatBtn = el("button", "btn", "Puskázó");
+            const panel = el("div", "info-panel");
+            panel.hidden = true;
+            panel.innerHTML = CHEATS[key];
+            cheatBtn.addEventListener("click", () => { panel.hidden = !panel.hidden; refreshLayout(); });
+            group.prepend(cheatBtn);
+            group.prepend(sel);
+            bar.after(panel);
+        }
+
+        Object.keys(LANGS).forEach(key => {
+            const L = LANGS[key];
+            if (L.ed) {
+                lastTpl[key] = L.ed.getValue();
+                const first = { name: L.first, code: lastTpl[key] };
+                if (key === "python") first.mode = "turtle";
+                TEMPLATES[key].unshift(first);
+            } else if (key === "regex") {
+                TEMPLATES.regex.unshift({ name: "Betűk és számok", pattern: $("regex-pattern").value, flags: $("regex-flags").value, text: $("regex-test").value });
+            }
+            setupTools(key);
+        });
+
+        const runners = { "ts-workspace": runTS, "lua-workspace": runLua, "php-workspace": runPHP, "game-workspace": runGame };
+        Object.entries(runners).forEach(([id, fn]) => editors[id].addKeyMap({ "Ctrl-Enter": fn }));
+        // A kódbetűtípus később töltődik be, ezért utána a szerkesztők újramérik a sorokat
+        if (document.fonts) document.fonts.ready.then(() => Object.values(editors).forEach(ed => ed.refresh()));
+
+        // ---------- 8. Húzható elválasztó ----------
+        let resizing = null;
+        document.querySelectorAll(".resizer").forEach(resizer => {
+            resizer.addEventListener("mousedown", e => {
+                resizing = { pane: resizer.previousElementSibling, bar: resizer };
+                resizer.classList.add("active");
+                document.body.style.cursor = "col-resize";
+                document.body.style.userSelect = "none";
+                const overlay = el("div"); overlay.id = "drag-overlay"; overlay.style.cssText = "position:fixed;inset:0;z-index:9999;cursor:col-resize;";
+                document.body.appendChild(overlay);
+                hideColorPicker();
+                e.preventDefault();
+            });
+        });
+
+        document.addEventListener("mousemove", e => {
+            if (!resizing) return;
+            const rect = resizing.pane.parentElement.getBoundingClientRect();
+            const width = Math.max(240, Math.min(rect.width - 240, e.clientX - rect.left));
+            resizing.pane.style.width = width + "px";
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (!resizing) return;
+            resizing.bar.classList.remove("active");
+            resizing = null;
+            document.body.style.cursor = "";
+            document.body.style.userSelect = "";
+            const overlay = $("drag-overlay"); if (overlay) overlay.remove();
+            refreshLayout();
+        });
+
+
+        // ---------- 9. Mentés fájlba és betöltés fájlból ----------
+        // Minden fül tartalma letölthető és visszatölthető. A "Minden mentése" gomb
+        // egyetlen .json fájlba teszi az összes fül állapotát (az SQL adatbázissal együtt).
+        const APP_ID = "informatika-tanulas";
+
+        function downloadBlob(blob, name) {
+            const a = el("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        }
+
+        function pickFile(accept, binary) {
+            return new Promise(resolve => {
+                const input = el("input");
+                input.type = "file";
+                if (accept) input.accept = accept;
+                input.style.display = "none";
+                input.addEventListener("change", () => {
+                    const file = input.files[0];
+                    input.remove();
+                    if (!file) return resolve(null);
+                    const r = new FileReader();
+                    r.onload = () => resolve({ name: file.name, data: r.result });
+                    r.onerror = () => { alert("A fájlt nem sikerült beolvasni."); resolve(null); };
+                    binary ? r.readAsArrayBuffer(file) : r.readAsText(file);
+                });
+                document.body.appendChild(input);
+                input.click();
+            });
+        }
+
+        const bytesToB64 = bytes => {
+            let bin = "";
+            for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+            return btoa(bin);
+        };
+        const b64ToBytes = b64 => Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+        const isSqliteFile = bytes => new TextDecoder("latin1").decode(bytes.subarray(0, 15)) === "SQLite format 3";
+
+        // --- SQL adatbázis ---
+        function openDatabase(bytes) {
+            if (!SQL) { pendingDbBytes = bytes; return; }
+            const next = new SQL.Database(bytes);
+            next.exec("SELECT count(*) FROM sqlite_master");   // hibát dob, ha a fájl sérült
+            if (db) db.close();
+            db = next;
+            dbDirty = true;
+            renderSchema();
+            $("sql-output").replaceChildren(el("p", "sql-msg", "Az adatbázis betöltve. Kattints egy táblára, vagy futtass egy lekérdezést."));
+            $("sql-stat").textContent = "";
+        }
+
+        function sqlValue(v) {
+            if (v === null || v === undefined) return "NULL";
+            if (typeof v === "number") return Number.isFinite(v) ? String(v) : "NULL";
+            if (v instanceof Uint8Array) return "X'" + Array.from(v, b => b.toString(16).padStart(2, "0")).join("") + "'";
+            return "'" + String(v).replace(/'/g, "''") + "'";
+        }
+
+        // Olvasható SQL-mentés: CREATE TABLE és INSERT parancsok, amik újra lefuttathatók
+        function dumpDatabaseSql() {
+            const out = ["-- Informatika Tanulás adatbázis-mentés, " + new Date().toLocaleString("hu-HU"), "BEGIN TRANSACTION;"];
+            const rows = q => { const r = db.exec(q); return r.length ? r[0].values : []; };
+            const objs = rows("SELECT type, name, sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END, rowid");
+            objs.filter(o => o[0] === "table").forEach(([, name, sql]) => {
+                out.push(sql + ";");
+                const res = db.exec('SELECT * FROM "' + name.replace(/"/g, '""') + '"');
+                if (res.length) res[0].values.forEach(r => out.push('INSERT INTO "' + name.replace(/"/g, '""') + '" VALUES (' + r.map(sqlValue).join(", ") + ");"));
+            });
+            objs.filter(o => o[0] !== "table").forEach(o => out.push(o[2] + ";"));
+            out.push("COMMIT;");
+            return out.join("\n") + "\n";
+        }
+
+        async function loadDatabaseFile() {
+            if (!SQL) { alert("Az SQL motor még töltődik, próbáld újra egy pillanat múlva."); return; }
+            const file = await pickFile(".sqlite,.sqlite3,.db,.sql,.txt", true);
+            if (!file) return;
+            const bytes = new Uint8Array(file.data);
+            try {
+                if (isSqliteFile(bytes)) openDatabase(bytes);
+                else {
+                    // SQL parancsokat tartalmazó fájl: üres adatbázisba futtatjuk le
+                    const text = new TextDecoder("utf-8").decode(bytes);
+                    const next = new SQL.Database();
+                    next.exec(text);
+                    if (db) db.close();
+                    db = next;
+                    dbDirty = true;
+                    renderSchema();
+                    $("sql-output").replaceChildren(el("p", "sql-msg", "Az SQL fájl lefutott, ebből épült fel az adatbázis."));
+                }
+            } catch (e) {
+                alert("Ebből a fájlból nem sikerült adatbázist betölteni: " + e.message);
+            }
+        }
+
+        // --- Fülenkénti fájlformátumok ---
+        const FILES = {
+            python: { name: "program.py", type: "text/x-python", accept: ".py,.pyw,.txt" },
+            sql: { name: "lekerdezes.sql", type: "application/sql", accept: ".sql,.txt" },
+            md: { name: "jegyzet.md", type: "text/markdown", accept: ".md,.markdown,.txt" },
+            ts: { name: "program.ts", type: "text/plain", accept: ".ts,.js,.txt" },
+            lua: { name: "program.lua", type: "text/plain", accept: ".lua,.txt" },
+            php: { name: "program.php", type: "text/plain", accept: ".php,.txt" },
+            game: { name: "jatek.js", type: "text/javascript", accept: ".js,.txt" },
+            blockly: { name: "blokkok.xml", type: "application/xml", accept: ".xml" },
+            regex: { name: "regex.json", type: "application/json", accept: ".json" }
+        };
+
+        function confirmReplace(key) {
+            const L = LANGS[key];
+            const cur = L.ed ? L.ed.getValue() : null;
+            if (L.ed && cur.trim() && cur !== lastTpl[key]) return confirm("A mostani kód el fog veszni. Betöltöd a fájlt?");
+            return true;
+        }
+
+        function fileText(key) {
+            if (LANGS[key].ed) return LANGS[key].ed.getValue();
+            if (key === "blockly") { if (!bWorkspace) initBlockly(); return bWorkspace ? blocklyXmlText() : ""; }
+            if (key === "regex") return JSON.stringify({ pattern: $("regex-pattern").value, flags: $("regex-flags").value, text: $("regex-test").value }, null, 2);
+            return "";
+        }
+
+        function loadFileText(key, text) {
+            const L = LANGS[key];
+            if (L.ed) {
+                L.ed.setValue(text);
+                L.ed.clearHistory();
+                lastTpl[key] = text;
+                if (key === "python") setPythonMode(/^\s*(import\s+turtle|from\s+turtle\s+import)/m.test(text) ? "turtle" : "normal");
+            } else if (key === "blockly") {
+                if (!bWorkspace) initBlockly();
+                if (!bWorkspace) throw new Error("A Blockly nem töltődött be.");
+                loadBlocklyXml(text);
+            } else if (key === "regex") {
+                const d = JSON.parse(text);
+                $("regex-pattern").value = d.pattern || "";
+                $("regex-flags").value = d.flags || "";
+                $("regex-test").value = d.text || "";
+                updateRegex();
+            }
+        }
+
+        function setupFileMenu(key) {
+            const F = FILES[key];
+            const group = $(LANGS[key].ws).querySelector(".left-pane .toolbar .group");
+            const sel = el("select", "btn");
+            sel.setAttribute("aria-label", "Fájl: mentés vagy betöltés");
+            sel.append(new Option("Fájl...", ""), new Option("Mentés fájlba (" + F.name.split(".").pop() + ")", "save"), new Option("Betöltés fájlból", "load"));
+            if (key === "sql") {
+                sel.append(
+                    new Option("Adatbázis letöltése (.sqlite)", "db-save"),
+                    new Option("Adatbázis mentése SQL parancsként (.sql)", "db-dump"),
+                    new Option("Adatbázis betöltése (.sqlite / .sql)", "db-load")
+                );
+            }
+            sel.addEventListener("change", async () => {
+                const act = sel.value;
+                sel.value = "";
+                try {
+                    if (act === "save") downloadText(fileText(key), F.name, F.type);
+                    else if (act === "load") {
+                        const file = await pickFile(F.accept, false);
+                        if (file && confirmReplace(key)) loadFileText(key, file.data);
+                    }
+                    else if (act === "db-save") {
+                        if (!db) throw new Error("Az adatbázis még töltődik.");
+                        downloadBlob(new Blob([db.export()], { type: "application/vnd.sqlite3" }), "adatbazis.sqlite");
+                    }
+                    else if (act === "db-dump") {
+                        if (!db) throw new Error("Az adatbázis még töltődik.");
+                        downloadText(dumpDatabaseSql(), "adatbazis.sql", "application/sql");
+                    }
+                    else if (act === "db-load") await loadDatabaseFile();
+                } catch (e) {
+                    alert("Nem sikerült: " + e.message);
+                }
+            });
+            group.prepend(sel);
+        }
+        Object.keys(FILES).forEach(setupFileMenu);
+
+        // --- Teljes munkamenet egy fájlban ---
+        function activeTab() {
+            const t = document.querySelector(".tab.active");
+            return t ? t.dataset.target : "html-workspace";
+        }
+
+        function collectState(cheapDb) {
+            const state = {
+                app: APP_ID,
+                version: 1,
+                saved: new Date().toISOString(),
+                active: activeTab(),
+                pythonMode: $("python-workspace").dataset.mode,
+                editors: {},
+                regex: { pattern: $("regex-pattern").value, flags: $("regex-flags").value, text: $("regex-test").value },
+                blockly: bWorkspace ? blocklyXmlText() : null,
+                sqlite: db ? (cheapDb ? cachedDbB64() : bytesToB64(db.export())) : null,
+                tools: {}
+            };
+            Object.keys(LANGS).forEach(k => { if (LANGS[k].ed) state.editors[k] = LANGS[k].ed.getValue(); });
+            if (window.Tools) Tools.ids().forEach(id => { const st = Tools.getState(id); if (st) state.tools[id] = st; });
+            return state;
+        }
+
+        async function applyState(state) {
+            if (!state || state.app !== APP_ID || !state.editors) throw new Error("Ez nem ennek az oldalnak a mentése.");
+            const problems = [];
+            Object.entries(state.editors).forEach(([k, v]) => {
+                if (LANGS[k] && LANGS[k].ed && typeof v === "string") { LANGS[k].ed.setValue(v); LANGS[k].ed.clearHistory(); lastTpl[k] = v; }
+            });
+            if (state.pythonMode === "turtle" || state.pythonMode === "normal") setPythonMode(state.pythonMode);
+            if (state.regex) {
+                $("regex-pattern").value = state.regex.pattern || "";
+                $("regex-flags").value = state.regex.flags || "";
+                $("regex-test").value = state.regex.text || "";
+                updateRegex();
+            }
+            if (state.blockly) {
+                try { if (!bWorkspace) initBlockly(); if (bWorkspace) loadBlocklyXml(state.blockly); else problems.push("Blockly"); }
+                catch (e) { problems.push("Blockly"); }
+            }
+            if (state.sqlite) {
+                try { openDatabase(b64ToBytes(state.sqlite)); } catch (e) { problems.push("SQL adatbázis"); }
+            }
+            if (state.tools && window.Tools) {
+                for (const [id, st] of Object.entries(state.tools)) {
+                    try { await Tools.setState(id, st); } catch (e) { problems.push(id); }
+                }
+            }
+            if (state.active) {
+                if ($(state.active) && $(state.active).dataset.tools) Tools.activate(state.active);
+                else if ($(state.active)) showWorkspace(state.active);
+            }
+            updateHTML();
+            return problems;
+        }
+
+        $("session-save").addEventListener("click", () => {
+            const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-");
+            downloadText(JSON.stringify(collectState(), null, 2), "munkamenet-" + stamp + ".json", "application/json");
+        });
+
+        $("session-load").addEventListener("click", async () => {
+            const file = await pickFile(".json,application/json", false);
+            if (!file) return;
+            let state;
+            try { state = JSON.parse(file.data); } catch (e) { alert("Ez a fájl nem olvasható munkamenet-fájl."); return; }
+            if (!confirm("Minden fül mostani tartalma lecserélődik a fájlban lévőre. Folytatod?")) return;
+            try {
+                const problems = await applyState(state);
+                if (problems.length) alert("Betöltve, de ezek a részek nem sikerültek: " + problems.join(", "));
+            } catch (e) {
+                alert("Nem sikerült betölteni: " + e.message);
+            }
+        });
+
+        // ---------- Automatikus mentés a böngésző tárába (localStorage), gzip-pel tömörítve ----------
+        // Ugyanazt az állapotot menti, mint a "Minden mentése" gomb. Betöltéskor visszaállítja, és minden változás után néhány tizedmásodperccel újra ment.
+        const AUTOSAVE_KEY = "ll:state:v1";
+        let autosaveReady = false, autosaveBusy = false, autosaveRestoring = false, autosaveTimer = null, lastSaved = null;
+
+        function autoState() {
+            const st = collectState(true);
+            delete st.saved;   // az időbélyeg miatt minden mentés különbözne
+            return st;
+        }
+        async function packText(text) {
+            if (window.CompressionStream) {
+                try {
+                    const stream = new Blob([text]).stream().pipeThrough(new CompressionStream("gzip"));
+                    return "gz:" + bytesToB64(new Uint8Array(await new Response(stream).arrayBuffer()));
+                } catch (e) { /* tömörítés nélkül mentünk */ }
+            }
+            return "raw:" + text;
+        }
+        async function unpackText(packed) {
+            if (packed.startsWith("raw:")) return packed.slice(4);
+            if (packed.startsWith("gz:") && window.DecompressionStream) {
+                const stream = new Blob([b64ToBytes(packed.slice(3))]).stream().pipeThrough(new DecompressionStream("gzip"));
+                return await new Response(stream).text();
+            }
+            throw new Error("ismeretlen vagy nem támogatott formátum");
+        }
+        const kb = n => (n / 1024 < 10 ? (n / 1024).toFixed(1) : Math.round(n / 1024)) + " KB";
+        function setAutosaveStatus(text, title) {
+            const box = $("autosave-status");
+            box.textContent = text;
+            box.title = title || "";
+        }
+        function clock() { return new Date().toLocaleTimeString("hu-HU", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
+
+        async function autosaveNow() {
+            if (!autosaveReady || autosaveRestoring || autosaveBusy) return;
+            autosaveBusy = true;
+            try {
+                const json = JSON.stringify(autoState());
+                if (json === lastSaved) return;
+                const packed = await packText(json);
+                localStorage.setItem(AUTOSAVE_KEY, packed);
+                lastSaved = json;
+                setAutosaveStatus("Automatikusan mentve " + clock(), "A böngésző tárában: " + kb(packed.length * 2) + (packed.startsWith("gz:") ? " (tömörítve, eredetileg " + kb(json.length * 2) + ")" : ""));
+            } catch (e) {
+                setAutosaveStatus("Nem sikerült automatikusan menteni", "Valószínűleg betelt a böngésző tára. Használd a Minden mentése gombot, vagy töröld az automentést.");
+            } finally {
+                autosaveBusy = false;
+            }
+        }
+        function scheduleAutosave() {
+            clearTimeout(autosaveTimer);
+            autosaveTimer = setTimeout(autosaveNow, 800);
+        }
+        // Oldal elhagyásakor nincs idő aszinkron tömörítésre, ezért ilyenkor szinkron, tömörítetlen mentés készül (a következő mentés újra tömöríti).
+        function autosaveFlush() {
+            if (!autosaveReady || autosaveRestoring) return;
+            try {
+                const json = JSON.stringify(autoState());
+                if (json === lastSaved) return;
+                localStorage.setItem(AUTOSAVE_KEY, "raw:" + json);
+                lastSaved = json;
+            } catch (e) { /* marad az előző mentés */ }
+        }
+
+        async function autosaveRestore() {
+            let packed = null;
+            try { packed = localStorage.getItem(AUTOSAVE_KEY); } catch (e) { /* a tár nem elérhető */ }
+            if (packed) {
+                autosaveRestoring = true;
+                try {
+                    const state = JSON.parse(await unpackText(packed));
+                    const problems = await applyState(state);
+                    lastSaved = JSON.stringify(autoState());
+                    setAutosaveStatus("Előző munkamenet visszaállítva", problems.length ? "Ezek a részek nem álltak vissza: " + problems.join(", ") : "");
+                } catch (e) {
+                    try { localStorage.removeItem(AUTOSAVE_KEY); } catch (_) { /* nem baj */ }
+                    setAutosaveStatus("A mentett állapot nem volt olvasható", "Törölve lett, az oldal az alap tartalommal indult.");
+                } finally {
+                    autosaveRestoring = false;
+                }
+            }
+            autosaveReady = true;
+            if (!packed) scheduleAutosave();
+        }
+
+        ["input", "change", "click", "keyup", "pointerup", "paste", "cut", "drop"].forEach(ev => document.addEventListener(ev, scheduleAutosave, true));
+        setInterval(autosaveNow, 10000);   // biztonsági háló: a nem eseményt kiváltó változásokhoz (pl. fájlbetöltés)
+        document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") autosaveFlush(); });
+        window.addEventListener("pagehide", autosaveFlush);
+        window.addEventListener("load", autosaveRestore);
+
+        $("autosave-clear").addEventListener("click", () => {
+            if (!confirm("Törlöd a böngészőben automatikusan mentett állapotot? Az oldal legközelebb az alap tartalommal indul. A most látható tartalom nem törlődik.")) return;
+            try { localStorage.removeItem(AUTOSAVE_KEY); } catch (e) { /* nem baj */ }
+            lastSaved = JSON.stringify(autoState());
+            setAutosaveStatus("Automentés törölve", "A következő változás után újra ment.");
+        });
+
+        window.addEventListener("resize", refreshLayout);
+        updateHTML();
+    </script>
+
+    <!-- Terminál, C / C++ / C#, folyamatábra és titkosítás fülek -->
+    <script src="tools/tools.js?v=5"></script>
+</body>
+</html>

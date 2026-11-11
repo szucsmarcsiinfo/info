@@ -1,0 +1,16 @@
+# Cloudflare fejlécek a statikus fájlokhoz (biztonság és gyorsítótár).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), interest-cohort=()
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=31536000
+
+# A betűtípusok nem változnak: egy évig gyorsítótárazhatók.
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# A saját fájlok mappája csak tárhely: a keresők ne vegyék fel.
+/sajat_fajlok/*
+  X-Robots-Tag: noindex
